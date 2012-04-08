@@ -1,0 +1,39 @@
+﻿<UserControl x:Class="SourceControlMonitor.Views.RepositoriesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal">
+            <Button Command="{Binding OnAddClick}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="..\Resources\Database.png" Width="32" />
+                    <TextBlock Text="Add"  VerticalAlignment="Center"/>
+                </StackPanel>
+            </Button>
+        </StackPanel>
+        <ListBox Grid.Row="1" ItemsSource="{Binding Repositories}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="..\Resources\Database.png" Width="32" />
+                        <TextBlock Text="{Binding Name}" FontStyle="Italic" />
+                        <TextBlock Text="{Binding Type}" FontWeight="Bold" />
+                        <Button Command="{Binding OnDeleteClick}">
+                            <Image Source="..\Resources\Database.png" Width="32" />
+                        </Button>
+                        <Button Command="{Binding OnEditClick}">
+                            <Image Source="..\Resources\Database.png" Width="32" />
+                        </Button>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </Grid>
+</UserControl>
