@@ -54,5 +54,25 @@ namespace DataServices
 				return new ObservableCollectionEx<ICommitItem>(allItems);
 			}
 		}
+
+		//void CheckStatus(string path)
+		//{
+		//    using(var client = new SvnClient())
+		//    {
+		//        var statusHandler = new EventHandler<SvnStatusEventArgs>(HandleStatusEvent);
+		//        client.Status(path, statusHandler);
+		//    }
+		//}
+
+		//void HandleStatusEvent(object sender, SvnStatusEventArgs args)
+		//{
+		//    switch(args.LocalContentStatus)
+		//    {
+		//        case SvnStatus.Added: // Handle appropriately
+		//            break;
+		//    }
+
+		//    // review other properties of 'args'
+		//}
 	}
 }

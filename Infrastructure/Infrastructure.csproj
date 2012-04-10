@@ -73,9 +73,11 @@
     <Reference Include="log4net, Version=1.2.11.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Expression.Interactions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -89,6 +91,19 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommandBehavior\CommandBehavior.cs" />
+    <Compile Include="CommandBehavior\CommandBehaviorBinding.cs" />
+    <Compile Include="CommandBehavior\EventHandlerGenerator.cs" />
+    <Compile Include="CommandBehavior\SimpleCommand.cs" />
+    <Compile Include="Events.cs" />
+    <Compile Include="Interfaces\IPopUpView.cs" />
+    <Compile Include="Interfaces\IPopUpViewModel.cs" />
+    <Compile Include="ViewModels\PopupOptions.cs" />
+    <Compile Include="ViewModels\PopUpViewModel.cs" />
+    <Compile Include="Views\PopUpView.xaml.cs">
+      <DependentUpon>PopUpView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Convertors\BoolToVisibilityConvertor.cs" />
     <Compile Include="Interfaces\ICommitItem.cs" />
     <Compile Include="Interfaces\ISourceControlDataService.cs" />
     <Compile Include="Models\Repository.cs" />
@@ -141,7 +156,12 @@
     </None>
     <AppDesigner Include="Properties\" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Page Include="Views\PopUpView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -3,6 +3,7 @@
                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                 xmlns:r="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary"
                 xmlns:tc="clr-namespace:Transitionals.Controls;assembly=Transitionals"
+                Background="{DynamicResource WindowBackgroundBrush}"
                 xmlns:transt="clr-namespace:Transitionals.Transitions;assembly=Transitionals" Title="ShellView" Height="550" Width="900">
     <r:RibbonWindow.Resources>
         <ResourceDictionary>
@@ -24,29 +25,9 @@
             <RowDefinition />
         </Grid.RowDefinitions>
         <ContentControl Grid.Row="0" Grid.ColumnSpan="2" Content="{Binding MenuView}" />
-        <Expander ExpandDirection="Left" Grid.Row="1" IsExpanded="True">
-            <Expander.Header>
-                <TextBlock Text="SvnRepositories" RenderTransformOrigin="0.5,0.5" Margin="0,80,0,0">
-                    <TextBlock.LayoutTransform>
-                        <TransformGroup>
-                            <ScaleTransform ScaleX="1" ScaleY="1"/>
-                            <SkewTransform AngleX="0" AngleY="0"/>
-                            <RotateTransform Angle="-90"/>
-                            <TranslateTransform X="0" Y="0"/>
-                        </TransformGroup>
-                    </TextBlock.LayoutTransform>
-                    <TextBlock.RenderTransform>
-                        <TransformGroup>
-                            <ScaleTransform ScaleX="1" ScaleY="1"/>
-                            <SkewTransform AngleX="0" AngleY="0"/>
-                            <RotateTransform Angle="0"/>
-                            <TranslateTransform X="0" Y="0"/>
-                        </TransformGroup>
-                   </TextBlock.RenderTransform>
-                </TextBlock>
-            </Expander.Header>
+        <Expander ExpandDirection="Left" Grid.Row="1" IsExpanded="True" Header="Repositories">
             <Expander.Content>
-                <ContentControl Content="{Binding RepositoriesView}" Width="150" />
+                <ContentControl Content="{Binding RepositoriesView}" Width="175" />
             </Expander.Content>
         </Expander>
         <tc:TransitionElement Grid.Row="1" Grid.Column="1" TransitionsEnabled="True" Content="{Binding MainView}">
@@ -54,5 +35,6 @@
                 <transt:TranslateTransition StartPoint="1,0" EndPoint="0,1" Duration="0:0:0.250"/>
             </tc:TransitionElement.Transition>
         </tc:TransitionElement>
+        
     </Grid>
 </r:RibbonWindow>

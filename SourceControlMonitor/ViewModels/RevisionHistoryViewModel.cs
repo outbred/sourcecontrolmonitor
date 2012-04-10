@@ -16,16 +16,16 @@ namespace SourceControlMonitor.ViewModels
 		private readonly List<ISourceControlDataService> _dataServices = null;
 		public RevisionHistoryViewModel()
 		{
-			_dataServices = DataServiceLocator.GetShareSources();
+			_dataServices = DataServiceLocator.GetSharedServices();
 			if(_dataServices != null)
 			{
 				_dataServices.ForEach(s => s.GetLogAsync(items =>
-															{
-																if(items != null)
-																{
-																	CommitItems.AddRange(items);
-																}
-															}));
+				{
+					if(items != null)
+					{
+						CommitItems.AddRange(items);
+					}
+				}));
 			}
 		}
 

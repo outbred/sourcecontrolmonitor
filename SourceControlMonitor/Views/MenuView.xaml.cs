@@ -13,7 +13,6 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Infrastructure.Utilities;
 using SourceControlMonitor.Interfaces;
-using MvvmTwitter.Utilities;
 
 namespace SourceControlMonitor.Views
 {

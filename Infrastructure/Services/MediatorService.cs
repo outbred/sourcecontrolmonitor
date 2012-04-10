@@ -18,7 +18,19 @@ namespace Infrastructure.Services
 		/// </summary>
 		private static readonly ConcurrentDictionary<object, ConcurrentList<MediatorToken>> SubscriptionTokens = new ConcurrentDictionary<object, ConcurrentList<MediatorToken>>();
 
-		public MediatorToken Subscribe<TEvent>(TEvent eventType, Action<object> onTriggered)
+		/// <summary>
+		/// To handle non-Enum events, one type to multiple events
+		/// </summary>
+		private static readonly ConcurrentDictionary<Type, ConcurrentList<MediatorToken>> TypesToTokens = new ConcurrentDictionary<Type, ConcurrentList<MediatorToken>>();
+
+		/// <summary>
+		/// Returns a token for a subscribed event
+		/// </summary>
+		/// <typeparam name="TEvent"></typeparam>
+		/// <param name="onTriggered"></param>
+		/// <param name="eventType">If null, registers the action with the Type</param>
+		/// <returns></returns>
+		public MediatorToken Subscribe<TEvent>(Action<object> onTriggered, TEvent eventType = null) where TEvent : class
 		{
 			if(onTriggered == null)
 			{
@@ -26,7 +38,21 @@ namespace Infrastructure.Services
 			}
 
 			MediatorToken token = null;
-			if(!SubscriptionTokens.ContainsKey(eventType))
+			var type = typeof(TEvent);
+
+			if(TypesToTokens.ContainsKey(type))
+			{
+				token = new MediatorToken();
+				RegisteredEvents[token] = onTriggered;
+				TypesToTokens[type].SafeAdd(token);
+			}
+			else if(eventType != null && SubscriptionTokens.ContainsKey(eventType))
+			{
+				token = new MediatorToken();
+				RegisteredEvents[token] = onTriggered;
+				SubscriptionTokens[eventType].SafeAdd(token);
+			}
+			else if(eventType != null)
 			{
 				token = new MediatorToken();
 				RegisteredEvents.TryAdd(token, onTriggered);
@@ -35,8 +61,8 @@ namespace Infrastructure.Services
 			else
 			{
 				token = new MediatorToken();
-				RegisteredEvents[token] = onTriggered;
-				SubscriptionTokens[eventType].SafeAdd(token);
+				RegisteredEvents.TryAdd(token, onTriggered);
+				TypesToTokens.TryAdd(type, new ConcurrentList<MediatorToken>() { token });
 			}
 			return token;
 		}
@@ -48,9 +74,17 @@ namespace Infrastructure.Services
 				return false;
 			}
 
+			var type = typeof(TEvent);
 			if(SubscriptionTokens.ContainsKey(eventType) && SubscriptionTokens[eventType].Contains(token))
 			{
 				var killedIt = SubscriptionTokens[eventType].SafeRemove(token);
+				Action<object> someAction;
+				killedIt = killedIt && RegisteredEvents.TryRemove(token, out someAction);
+				return killedIt;
+			}
+			else if(TypesToTokens.ContainsKey(type) && TypesToTokens[type].Contains(token))
+			{
+				var killedIt = TypesToTokens[type].SafeRemove(token);
 				Action<object> someAction;
 				killedIt = killedIt && RegisteredEvents.TryRemove(token, out someAction);
 				return killedIt;
@@ -63,13 +97,25 @@ namespace Infrastructure.Services
 		/// </summary>
 		/// <param name="eventType"></param>
 		/// <param name="argument"></param>
-		public void NotifyColleagues<TEvent>(TEvent eventType, object argument)
+		public void NotifyColleagues<TEvent>(object argument, TEvent eventType = null) where TEvent : class
 		{
 			// find all tokens for this event
 			// fire off the Action<> for each one in succession
-			if(SubscriptionTokens.ContainsKey(eventType) && SubscriptionTokens[eventType] != null)
+			var type = typeof(TEvent);
+			if(eventType != null && SubscriptionTokens.ContainsKey(eventType) && SubscriptionTokens[eventType] != null)
 			{
 				var tokens = SubscriptionTokens[eventType];
+				tokens.ForEach(t =>
+				{
+					if(RegisteredEvents.ContainsKey(t))
+					{
+						RegisteredEvents[t](argument);
+					}
+				});
+			}
+			else if(TypesToTokens.ContainsKey(type) && TypesToTokens[type] != null)
+			{
+				var tokens = TypesToTokens[type];
 				tokens.ForEach(t =>
 				{
 					if(RegisteredEvents.ContainsKey(t))
@@ -85,9 +131,9 @@ namespace Infrastructure.Services
 		/// </summary>
 		/// <param name="eventType"></param>
 		/// <param name="argument"></param>
-		public void NotifyColleaguesAsync<TEvent>(TEvent eventType, object argument)
+		public void NotifyColleaguesAsync<TEvent>(object argument, TEvent eventType = null) where TEvent : class
 		{
-			Task.Factory.StartNew(() => NotifyColleagues(eventType, argument));
+			Task.Factory.StartNew(() => NotifyColleagues(argument, eventType));
 		}
 	}
 }

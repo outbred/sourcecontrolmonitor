@@ -2,6 +2,7 @@ using System;
 using System.Runtime.Serialization;
 using System.Text;
 using Infrastructure.Utilities;
+using Infrastructure.Interfaces;
 
 namespace Infrastructure.Models
 {
@@ -10,8 +11,31 @@ namespace Infrastructure.Models
 	{
 		private string _name;
 		private string _type;
-
 		private Uri _path;
+
+		public DelegateCommand OnEditClick
+		{
+			get
+			{
+				return new DelegateCommand(ignore =>
+				{
+					Mediator.NotifyColleaguesAsync(SwitchViewEvent.EditRepository, this);
+					MessageBoxService.ShowInfo(string.Format("Done notified colleagues to edit repo {0}", this.Name));
+				});
+			}
+		}
+
+		public DelegateCommand OnDeleteClick
+		{
+			get
+			{
+				return new DelegateCommand(ignore =>
+				{
+					Mediator.NotifyColleaguesAsync<DeleteRepositoryEvent>(this);
+					MessageBoxService.ShowInfo(string.Format("Done notified colleagues to delete repo {0}", this.Name));
+				});
+			}
+		}
 
 		[DataMember]
 		public Uri Path

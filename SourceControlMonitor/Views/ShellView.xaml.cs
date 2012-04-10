@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Infrastructure.Utilities;
-using MvvmTwitter.Utilities;
 using SourceControlMonitor.Interfaces;
 
 namespace SourceControlMonitor.Views

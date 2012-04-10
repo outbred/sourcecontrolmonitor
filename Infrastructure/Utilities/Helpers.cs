@@ -21,32 +21,24 @@ namespace Infrastructure.Utilities
 				if(_knownTypes.Count == 0)
 				{
 
-					var dir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-					if(!string.IsNullOrWhiteSpace(dir) && Directory.Exists(dir))
+					assembliesToLoad.ForEach(a =>
 					{
-						assembliesToLoad.ForEach(a =>
+						Logger.Default.DebugFormat("Trying to load {0}", a);
+						try
 						{
-							Logger.Default.DebugFormat("Trying to load {0}", a);
-							try
-							{
-								var assembly = Assembly.LoadFrom(a);
-								var types = assembly.GetTypes();
-								_knownTypes.AddRange(types);
-							}
-							catch(Exception ex)
-							{
-								Logger.Default.Error(string.Format("Unable to load assembly {0}", a), ex);
-							}
-						});
-					}
-					else
-					{
-						throw new Exception("You cannot run this program at the root of a drive!");
-					}
+							var assembly = Assembly.LoadFrom(a);
+							var types = assembly.GetTypes();
+							_knownTypes.AddRange(types);
+						}
+						catch(Exception ex)
+						{
+							Logger.Default.Error(string.Format("Unable to load assembly {0}", a), ex);
+						}
+					});
 
 					if(_knownTypes.Count == 0)
 					{
-						throw new Exception("The impossible has happened.  This is not a .NET assembly.");
+						throw new Exception("The impossible has happened.  No .NET assemblies found");
 					}
 				}
 			}

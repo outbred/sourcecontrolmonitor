@@ -8,7 +8,7 @@ namespace Infrastructure.Utilities
 {
 	public class DataServiceLocator
 	{
-		public static List<ISourceControlDataService> GetShareSources()
+		public static List<ISourceControlDataService> GetSharedServices()
 		{
 			return Helpers.GetSharedInstances<ISourceControlDataService>();
 		}

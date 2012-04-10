@@ -41,7 +41,24 @@ namespace DataServices.Extensions
 				var itemChanged = new ItemChanged()
 									{
 										FilePath = p.RepositoryPath.ToString(),
-										Type = Enum.GetName(typeof(SvnChangeAction), p.Action)
+										ChangeType = Enum.GetName(typeof(SvnChangeAction), p.Action)[0].ToString(),
+										OnViewChanges = new DelegateCommand(ignore =>
+														{
+															using(SvnClient svnClient = new SvnClient())
+															{
+																Collection<SvnListEventArgs> contents;
+																List<string> files = new List<string>();
+																if(svnClient.GetList(new Uri(p.RepositoryPath.ToString()), out contents))
+																{
+																	foreach(SvnListEventArgs item in contents)
+																	{
+																		files.Add(item.Path);
+																	}
+																}
+															}
+														})
+										// TODO: implement
+										//HasLocalEdits = 
 									};
 				result.Add(itemChanged);
 			});

@@ -31,6 +31,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PresentationCore" />
     <Reference Include="SharpSvn">
       <HintPath>..\3rd Party\SharpSvn-x64\SharpSvn.dll</HintPath>
     </Reference>

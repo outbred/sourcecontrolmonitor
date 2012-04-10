@@ -6,7 +6,7 @@
              xmlns:r="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary" mc:Ignorable="d" 
              d:DesignHeight="150" d:DesignWidth="800">
     <Grid>
-        <r:Ribbon >
+        <r:Ribbon>
             <!--<r:RibbonTab Header="Repositories" KeyTip="R">
                 <r:RibbonGroup Header="Manage">
                     <r:RibbonButton Command="{Binding OnAddRepositoryClick}" KeyTip="A" ToolTip="Add Repository" Label="Add" />

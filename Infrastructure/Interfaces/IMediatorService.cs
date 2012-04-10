@@ -12,7 +12,7 @@ namespace Infrastructure.Interfaces
 		/// <param name="eventType">Which event to be subscribed to</param>
 		/// <param name="onTriggered">Action to be performed when event is triggered - strong reference</param>
 		/// <returns>Subscription token (for unsubscribing)</returns>
-		MediatorToken Subscribe<TEvent>(TEvent eventType, Action<object> onTriggered);
+		MediatorToken Subscribe<TEvent>(Action<object> onTriggered, TEvent eventType = null) where TEvent : class;
 
 		/// <summary>
 		/// Allows a consumer to unsubscribe from events by passing in the type and token
@@ -27,14 +27,14 @@ namespace Infrastructure.Interfaces
 		/// </summary>
 		/// <param name="eventType">Which event to publish</param>
 		/// <param name="argument"></param>
-		void NotifyColleagues<TEvent>(TEvent eventType, object argument);
+		void NotifyColleagues<TEvent>(object argument, TEvent eventType = null) where TEvent : class;
 
 		/// <summary>
 		/// Triggers the event with payload async from the calling thread
 		/// </summary>
 		/// <param name="eventType">Which event to publish asynchronously</param>
 		/// <param name="argument"></param>
-		void NotifyColleaguesAsync<TEvent>(TEvent eventType, object argument);
+		void NotifyColleaguesAsync<TEvent>(object argument, TEvent eventType = null) where TEvent : class;
 	}
 
 	/// <summary>

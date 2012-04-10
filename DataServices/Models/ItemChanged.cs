@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Infrastructure.Interfaces;
+using Infrastructure.Utilities;
 
 namespace DataServices.Models
 {
@@ -10,11 +11,13 @@ namespace DataServices.Models
 	{
 		#region Implementation of IItemChanged
 
-		public string Type { get; set; }
+		public string ChangeType { get; set; }
 
 		public string FilePath { get; set; }
 
 		public bool? HasLocalEdits { get; set; }
+
+		public DelegateCommand OnViewChanges { get; set; }
 
 		#endregion
 	}

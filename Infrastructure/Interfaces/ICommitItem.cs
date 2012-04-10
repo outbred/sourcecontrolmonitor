@@ -16,8 +16,9 @@ namespace Infrastructure.Interfaces
 
 	public interface IItemChanged
 	{
-		string Type { get; }
+		string ChangeType { get; }
 		string FilePath { get; }
 		bool? HasLocalEdits { get; }
+		DelegateCommand OnViewChanges { get; }
 	}
 }

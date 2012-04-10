@@ -1,6 +1,5 @@
 ﻿using Infrastructure.Interfaces;
 using Infrastructure.Utilities;
-using MvvmTwitter.Utilities;
 using System.Windows;
 
 namespace Infrastructure.Services

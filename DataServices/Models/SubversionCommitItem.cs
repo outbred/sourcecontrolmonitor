@@ -5,25 +5,79 @@ using System.Linq;
 using System.Text;
 using Infrastructure.Interfaces;
 using Infrastructure.Utilities;
+using SharpSvn;
 
 namespace DataServices.Models
 {
-	public class SubversionCommitItem : ICommitItem
+	public class SubversionCommitItem : ViewModelBase, ICommitItem
 	{
 		#region Implementation of ICommitItem
 
-		public string Author { get; set; }
+		private string _author;
+		public string Author
+		{
+			get { return _author; }
+			set
+			{
+				_author = value;
+				NotifyPropertyChanged("Author");
+			}
+		}
 
-		public DateTime Date { get; set; }
+		private DateTime _date;
+		public DateTime Date
+		{
+			get { return _date; }
+			set
+			{
+				_date = value;
+				NotifyPropertyChanged("Date");
+			}
+		}
 
-		public string LogMessage { get; set; }
+		private string _logMessage;
+		public string LogMessage
+		{
+			get { return _logMessage; }
+			set
+			{
+				_logMessage = value;
+				NotifyPropertyChanged("LogMessage");
+			}
+		}
 
-		public long Revision { get; set; }
+		private long _revision;
+		public long Revision
+		{
+			get { return _revision; }
+			set
+			{
+				_revision = value;
+				NotifyPropertyChanged("Revision");
+			}
+		}
 
-		public bool? HasLocalEditsOnAnyFile { get; set; }
+		private bool? _hasLocalEditsOnAnyFile;
+		public bool? HasLocalEditsOnAnyFile
+		{
+			get { return _hasLocalEditsOnAnyFile; }
+			set
+			{
+				_hasLocalEditsOnAnyFile = value;
+				NotifyPropertyChanged("HasLocalEditsOnAnyFile");
+			}
+		}
 
-		public ObservableCollectionEx<IItemChanged> ItemChanges { get; set; }
-
+		private ObservableCollectionEx<IItemChanged> _itemChanges;
+		public ObservableCollectionEx<IItemChanged> ItemChanges
+		{
+			get { return _itemChanges; }
+			set
+			{
+				_itemChanges = value;
+				NotifyPropertyChanged("ItemChanges");
+			}
+		}
 		#endregion
 	}
 }
