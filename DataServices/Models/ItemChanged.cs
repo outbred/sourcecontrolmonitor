@@ -19,6 +19,8 @@ namespace DataServices.Models
 
 		public DelegateCommand OnViewChanges { get; set; }
 
+		public bool HasBeenModified { get; set; }
+
 		#endregion
 	}
 }

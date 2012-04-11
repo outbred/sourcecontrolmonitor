@@ -2,7 +2,6 @@
 
 namespace Infrastructure.Interfaces
 {
-	public enum ViewModelEvents { SwitchView, SwitchViewBlocked, SwitchViewUnblocked }
 
 	public interface IMediatorService
 	{

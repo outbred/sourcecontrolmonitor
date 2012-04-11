@@ -16,6 +16,8 @@ namespace Infrastructure.Settings
 	{
 		[DataMember]
 		public ObservableCollectionEx<Repository> SvnRepositories { get; set; }
+
+		public string DiffDirectory { get { return "Diffs"; } }
 	}
 
 	public class ApplicationSettings : OverwriteSettingsProfile<ApplicationSettings, GlobalSettings> { }

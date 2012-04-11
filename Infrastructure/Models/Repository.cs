@@ -19,7 +19,7 @@ namespace Infrastructure.Models
 			{
 				return new DelegateCommand(ignore =>
 				{
-					Mediator.NotifyColleaguesAsync(SwitchViewEvent.EditRepository, this);
+					Mediator.NotifyColleaguesAsync<EditRepositoryEvent>(this);
 					MessageBoxService.ShowInfo(string.Format("Done notified colleagues to edit repo {0}", this.Name));
 				});
 			}

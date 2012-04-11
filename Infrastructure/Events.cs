@@ -7,9 +7,7 @@ namespace Infrastructure
 {
 	public class ShowPopupEvent { }
 	public class DeleteRepositoryEvent { }
-
-	public enum SwitchViewEvent
-	{
-		EditRepository
-	}
+	public class BeginBusyEvent { }
+	public class EndBusyEvent { }
+	public class EditRepositoryEvent { }
 }

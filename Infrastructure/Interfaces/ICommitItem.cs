@@ -20,5 +20,6 @@ namespace Infrastructure.Interfaces
 		string FilePath { get; }
 		bool? HasLocalEdits { get; }
 		DelegateCommand OnViewChanges { get; }
+		bool HasBeenModified { get; }
 	}
 }

@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:SampleData="clr-namespace:Expression.Blend.SampleData.RevisionHistoryViewModelSampleDataSource"
+             xmlns:local="clr-namespace:AttachedCommandBehavior;assembly=Infrastructure"
              x:Class="SourceControlMonitor.Views.RevisionHistoryView" 
              mc:Ignorable="d"
              d:DesignHeight="550" d:DesignWidth="800">
@@ -33,7 +34,7 @@
                         <ListBox ItemsSource="{Binding ItemChanges}">
     						<ListBox.ItemTemplate>
     							<DataTemplate>
-                                    <Grid>
+                                    <Grid local:CommandBehavior.Event="MouseDown" local:CommandBehavior.Command="{Binding OnViewChanges}">
     									<Grid.ColumnDefinitions>
     										<ColumnDefinition Width="Auto" />
     										<ColumnDefinition Width="Auto" />

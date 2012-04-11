@@ -78,6 +78,17 @@ namespace DataServices.Models
 				NotifyPropertyChanged("ItemChanges");
 			}
 		}
+
+		private Uri _repoPath;
+		public Uri RepoPath
+		{
+			get { return _repoPath; }
+			set
+			{
+				_repoPath = value;
+				NotifyPropertyChanged("RepoPath");
+			}
+		}
 		#endregion
 	}
 }

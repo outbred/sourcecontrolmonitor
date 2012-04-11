@@ -44,7 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Extensions.cs" />
+    <Compile Include="Services\SvnDataServiceExtensions.cs" />
     <Compile Include="Models\ItemChanged.cs" />
     <Compile Include="Models\SubversionCommitItem.cs" />
     <Compile Include="Services\SubversionDataService.cs" />

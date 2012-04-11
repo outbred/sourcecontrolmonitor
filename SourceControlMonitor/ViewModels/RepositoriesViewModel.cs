@@ -16,7 +16,8 @@ namespace SourceControlMonitor.ViewModels
 		{
 			ApplicationSettings.Instance.SvnRepositories = new ObservableCollectionEx<Repository>()
 			{
-			    new Repository() { Name = "AccessData", Path = new Uri("https://addev/svn/ad/trunk/world/MPE")}
+				new Repository() { Name = "MEFedMVVM", Path = new Uri("https://mefedmvvm.svn.codeplex.com/svn/")},
+			    //new Repository() { Name = "AccessData", Path = new Uri("https://addev/svn/ad/trunk/world/MPE")}
 			};
 			ApplicationSettings.Save();
 		}

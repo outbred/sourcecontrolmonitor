@@ -5,8 +5,8 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
-using DataServices.Extensions;
 using DataServices.Models;
+using Infrastructure;
 using Infrastructure.Interfaces;
 using Infrastructure.Models;
 using Infrastructure.Utilities;
@@ -18,6 +18,12 @@ namespace DataServices
 {
 	public class SubversionDataService : ISourceControlDataService
 	{
+		private readonly IMediatorService _mediator = null;
+		public SubversionDataService()
+		{
+			_mediator = MediatorLocator.GetSharedMediator();
+		}
+
 		public void GetLogAsync(Action<ObservableCollectionEx<ICommitItem>> onComplete, int limit = 30)
 		{
 			Task.Factory.StartNew(() => onComplete(GetLog(limit)));
@@ -36,6 +42,7 @@ namespace DataServices
 			{
 				var allItems = new List<ICommitItem>();
 
+				MediatorLocator.GetSharedMediator().NotifyColleaguesAsync<BeginBusyEvent>("Downloading log...");
 				repos.ToList().ForEach(repo =>
 				{
 					if(!string.IsNullOrWhiteSpace(repo.UserName))
@@ -47,10 +54,12 @@ namespace DataServices
 					client.GetLog(repo.Path, args, out logItems);
 					if(logItems != null)
 					{
-						allItems.AddRange(logItems.ToCommitItems());
+						var rootIndex = repo.Path.ToString().IndexOf("svn/");
+						var root = repo.Path.ToString().EndsWith("svn/") ? repo.Path.ToString() : repo.Path.ToString().Remove(rootIndex + 4);
+						allItems.AddRange(logItems.ToCommitItems(new Uri(root), _mediator));
 					}
 				});
-
+				MediatorLocator.GetSharedMediator().NotifyColleaguesAsync<EndBusyEvent>(null);
 				return new ObservableCollectionEx<ICommitItem>(allItems);
 			}
 		}

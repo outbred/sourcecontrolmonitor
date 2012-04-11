@@ -4,7 +4,9 @@
                 xmlns:r="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary"
                 xmlns:tc="clr-namespace:Transitionals.Controls;assembly=Transitionals"
                 Background="{DynamicResource WindowBackgroundBrush}"
-                xmlns:transt="clr-namespace:Transitionals.Transitions;assembly=Transitionals" Title="ShellView" Height="550" Width="900">
+                xmlns:transt="clr-namespace:Transitionals.Transitions;assembly=Transitionals"
+                xmlns:local="clr-namespace:SourceControlMonitor.Views"
+                xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit" Title="ShellView" Height="550" Width="900">
     <r:RibbonWindow.Resources>
         <ResourceDictionary>
             <Style TargetType="ContentControl">
@@ -35,6 +37,6 @@
                 <transt:TranslateTransition StartPoint="1,0" EndPoint="0,1" Duration="0:0:0.250"/>
             </tc:TransitionElement.Transition>
         </tc:TransitionElement>
-        
+        <xctk:BusyIndicator Grid.ColumnSpan="2" Grid.RowSpan="2" IsBusy="{Binding IsBusy, FallbackValue=False}" BusyContent="{Binding IsBusyText}" />
     </Grid>
 </r:RibbonWindow>
