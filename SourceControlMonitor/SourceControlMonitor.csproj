@@ -135,9 +135,6 @@
     <Compile Include="Interfaces\IRepositoriesViewModel.cs" />
     <Compile Include="Interfaces\IRepositoriesView.cs" />
     <Compile Include="Interfaces\IRevisionHistoryViewModel.cs" />
-    <Compile Include="Views\CircularProgressBar.xaml.cs">
-      <DependentUpon>CircularProgressBar.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\MenuView.xaml.cs">
       <DependentUpon>MenuView.xaml</DependentUpon>
     </Compile>
@@ -176,10 +173,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Themes\WhistlerBlue.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\CircularProgressBar.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
