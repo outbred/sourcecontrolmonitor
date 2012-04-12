@@ -6,7 +6,11 @@
                 Background="{DynamicResource WindowBackgroundBrush}"
                 xmlns:transt="clr-namespace:Transitionals.Transitions;assembly=Transitionals"
                 xmlns:local="clr-namespace:SourceControlMonitor.Views"
-                xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit" Title="ShellView" Height="550" Width="900">
+                xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit" 
+                Title="Source Control Monitor"
+                WindowStartupLocation="CenterScreen"
+                Height="550" 
+                Width="1100">
     <r:RibbonWindow.Resources>
         <ResourceDictionary>
             <Style TargetType="ContentControl">
@@ -37,6 +41,7 @@
                 <transt:TranslateTransition StartPoint="1,0" EndPoint="0,1" Duration="0:0:0.250"/>
             </tc:TransitionElement.Transition>
         </tc:TransitionElement>
-        <xctk:BusyIndicator Grid.ColumnSpan="2" Grid.RowSpan="2" IsBusy="{Binding IsBusy, FallbackValue=False}" BusyContent="{Binding IsBusyText}" />
+        <xctk:BusyIndicator Grid.ColumnSpan="2" Grid.RowSpan="2" IsBusy="{Binding IsBusy, FallbackValue=False}" />
+        <xctk:ChildWindow CloseButtonStyle="{x:Null}" Name="childWindow" WindowState="{Binding IsOpen}" Grid.RowSpan="2" Grid.ColumnSpan="2" WindowStartupLocation="Center" IsModal="True" Content="{Binding ChildWindowContent}" />
     </Grid>
 </r:RibbonWindow>

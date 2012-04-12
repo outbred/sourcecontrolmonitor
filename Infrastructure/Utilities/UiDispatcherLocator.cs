@@ -6,7 +6,7 @@ namespace Infrastructure.Utilities
 	{
 		public static IUiDispatcherService GetSharedDispatcher()
 		{
-			return Helpers.GetSharedInstance<IUiDispatcherService>();
+			return Container.GetSharedInstance<IUiDispatcherService>();
 		}
 	}
 }

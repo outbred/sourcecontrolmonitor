@@ -66,7 +66,6 @@ namespace Infrastructure.Utilities
 			}
 			catch(SerializationException)
 			{
-				// in case some dummy (Oxygen??) didn't encode the string properly...
 				if(!retry)
 				{
 					Logger.Default.ErrorFormat("SerializationException when deserializing {0} from JSON string. Reencoding as UTF8", typeof(T).Name);

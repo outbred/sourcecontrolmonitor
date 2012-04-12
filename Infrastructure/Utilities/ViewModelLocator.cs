@@ -5,7 +5,7 @@
 	{
 		public static TInterface GetSharedViewModel<TInterface>() where TInterface : class
 		{
-			return Helpers.GetSharedInstance<TInterface>();
+			return Container.GetSharedInstance<TInterface>();
 		}
 	}
 }

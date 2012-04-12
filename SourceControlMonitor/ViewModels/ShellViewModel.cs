@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Infrastructure.Settings;
 using Infrastructure.Utilities;
 using SourceControlMonitor.Interfaces;
 using System.IO;
 using Infrastructure;
+using Xceed.Wpf.Toolkit;
 
 namespace SourceControlMonitor.ViewModels
 {
@@ -24,12 +23,26 @@ namespace SourceControlMonitor.ViewModels
 			MenuView = ViewLocator.GetSharedInstance<IMenuView>();
 			MainView = ViewLocator.GetSharedInstance<IRevisionHistoryView>();
 			RepositoriesView = ViewLocator.GetSharedInstance<IRepositoriesView>();
+			Container.RegisterInstance<ISourceControlController>();
+			ChildWindowState = WindowState.Closed;
+
 			Mediator.Subscribe<BeginBusyEvent>(text =>
-												{
-													IsBusy = true;
-													IsBusyText =  (text ?? "").ToString();
-												});
+			{
+				IsBusy = true;
+				IsBusyText = (text ?? "").ToString();
+			});
 			Mediator.Subscribe<EndBusyEvent>(text => IsBusy = false);
+
+			var showChildWindow = new Action<object>(repo =>
+			{
+				UiDispatcherService.InvokeAsync(() =>
+				{
+					ChildWindowContent = ViewLocator.GetSharedInstance<IRepositoryEditorView>();
+					ChildWindowState = WindowState.Open;
+				});
+			});
+			Mediator.Subscribe<EditRepositoryEvent>(showChildWindow);
+			Mediator.Subscribe<AddRepositoryEvent>(showChildWindow);
 		}
 
 		private object _menuView;
@@ -51,6 +64,28 @@ namespace SourceControlMonitor.ViewModels
 			{
 				_mainView = value;
 				NotifyPropertyChanged("MainView");
+			}
+		}
+
+		private WindowState _childWindowState = WindowState.Closed;
+		public WindowState ChildWindowState
+		{
+			get { return _childWindowState; }
+			set
+			{
+				_childWindowState = value;
+				NotifyPropertyChanged("ChildWindowState");
+			}
+		}
+
+		private object _childWindowContent;
+		public object ChildWindowContent
+		{
+			get { return _childWindowContent; }
+			set
+			{
+				_childWindowContent = value;
+				NotifyPropertyChanged("ChildWindowContent");
 			}
 		}
 

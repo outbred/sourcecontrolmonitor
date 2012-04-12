@@ -7,7 +7,7 @@ namespace Infrastructure.Utilities
 	{
 		public static IMediatorService GetSharedMediator()
 		{
-			return Helpers.GetSharedInstance<IMediatorService>();
+			return Container.GetSharedInstance<IMediatorService>();
 		}
 	}
 }

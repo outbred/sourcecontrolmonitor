@@ -53,9 +53,8 @@
                 <DataTemplate>
                     <Border BorderBrush="LightBlue" BorderThickness="1" Background="White">
                         <StackPanel Orientation="Horizontal">
-                            <Image Source="..\Resources\svn48.png" Width="24" Margin="0,0,8,0" />
+                            <Image Source="{Binding Type, Converter={StaticResource TypeToImageConverter}}" Width="24" Margin="0,0,8,0" />
                             <TextBlock Text="{Binding Name}" FontStyle="Italic" Margin="0,0,8,0" VerticalAlignment="Center" />
-                            <TextBlock Text="{Binding Type}" FontWeight="Bold" Margin="0,0,8,0" VerticalAlignment="Center" />
                             <Image Source="..\Resources\Delete.png" Width="16" Margin="0,0,8,0" local:CommandBehavior.Event="MouseDown" 
                                     local:CommandBehavior.Command="{Binding OnDeleteClick}">
                                 <Image.Triggers>

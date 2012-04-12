@@ -2,8 +2,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:SampleData="clr-namespace:Expression.Blend.SampleData.RevisionHistoryViewModelSampleDataSource" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             mc:Ignorable="d"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:Convertors="clr-namespace:SourceControlMonitor.Convertors" mc:Ignorable="d"
              x:Class="SourceControlMonitor.App"
              StartupUri="Views\ShellView.xaml">
 	<Application.Resources>
@@ -43,6 +43,7 @@
                     </ControlTemplate>
                 </ResourceDictionary>-->
         	</ResourceDictionary.MergedDictionaries>
+        	<Convertors:TypeToImageConverter x:Key="TypeToImageConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

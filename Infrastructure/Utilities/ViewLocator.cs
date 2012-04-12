@@ -4,7 +4,7 @@
 	{
 		public static TInterface GetSharedInstance<TInterface>() where TInterface : class
 		{
-			return Helpers.GetSharedInstance<TInterface>();
+			return Container.GetSharedInstance<TInterface>();
 		}
 	}
 }

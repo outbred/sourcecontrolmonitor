@@ -9,10 +9,11 @@ using Infrastructure.Services;
 
 namespace Infrastructure.Utilities
 {
-	public static class Helpers
+	public static class Container
 	{
 		private static readonly List<Type> _knownTypes = new List<Type>();
 		private static readonly LoggerService Logger = new LoggerService();
+		private static readonly object Locker = new object();
 
 		public static void Initialize(List<string> assembliesToLoad)
 		{
@@ -46,6 +47,11 @@ namespace Infrastructure.Utilities
 			{
 				Logger.Default.Error("Unable to load types into the container", ex);
 			}
+		}
+
+		public static void RegisterInstance<TInterface>() where TInterface : class
+		{
+			GetSharedInstance<TInterface>();
 		}
 
 		static readonly ConcurrentDictionary<Type, object> AlreadyCreated = new ConcurrentDictionary<Type, object>();

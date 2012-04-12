@@ -10,7 +10,7 @@ namespace Infrastructure.Utilities
 	{
 		public static IMessageBoxService GetSharedService()
 		{
-			return Helpers.GetSharedInstance<IMessageBoxService>();
+			return Container.GetSharedInstance<IMessageBoxService>();
 		}
 	}
 }

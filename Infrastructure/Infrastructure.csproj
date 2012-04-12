@@ -98,6 +98,7 @@
     <Compile Include="Events.cs" />
     <Compile Include="Interfaces\IPopUpView.cs" />
     <Compile Include="Interfaces\IPopUpViewModel.cs" />
+    <Compile Include="Utilities\PasswordHelper.cs" />
     <Compile Include="ViewModels\PopupOptions.cs" />
     <Compile Include="ViewModels\PopUpViewModel.cs" />
     <Compile Include="Views\PopUpView.xaml.cs">
@@ -116,7 +117,7 @@
     <Compile Include="Controls\ConcurrentList.cs" />
     <Compile Include="Utilities\DataServiceLocator.cs" />
     <Compile Include="Utilities\DelegateCommand.cs" />
-    <Compile Include="Utilities\Helpers.cs" />
+    <Compile Include="Utilities\Container.cs" />
     <Compile Include="Interfaces\IMediatorService.cs" />
     <Compile Include="Interfaces\IMessageBoxService.cs" />
     <Compile Include="Interfaces\IUiDispatcherService.cs" />

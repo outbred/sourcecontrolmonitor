@@ -9,7 +9,7 @@ namespace Infrastructure.Services
 		private static readonly IUiDispatcherService _uiDispatcherService = null;
 		static MessageBoxService()
 		{
-			_uiDispatcherService = Helpers.GetSharedInstance<IUiDispatcherService>();
+			_uiDispatcherService = Container.GetSharedInstance<IUiDispatcherService>();
 		}
 
 		public void ShowError(string message, string caption = null)

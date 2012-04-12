@@ -3,14 +3,15 @@ using System.Runtime.Serialization;
 using System.Text;
 using Infrastructure.Utilities;
 using Infrastructure.Interfaces;
+using System.ComponentModel;
 
 namespace Infrastructure.Models
 {
 	[DataContract]
-	public class Repository : ViewModelBase
+	public class Repository : ViewModelBase, IDataErrorInfo
 	{
 		private string _name;
-		private string _type;
+		private SourceControlType _type;
 		private Uri _path;
 
 		public DelegateCommand OnEditClick
@@ -20,7 +21,6 @@ namespace Infrastructure.Models
 				return new DelegateCommand(ignore =>
 				{
 					Mediator.NotifyColleaguesAsync<EditRepositoryEvent>(this);
-					MessageBoxService.ShowInfo(string.Format("Done notified colleagues to edit repo {0}", this.Name));
 				});
 			}
 		}
@@ -32,21 +32,31 @@ namespace Infrastructure.Models
 				return new DelegateCommand(ignore =>
 				{
 					Mediator.NotifyColleaguesAsync<DeleteRepositoryEvent>(this);
-					MessageBoxService.ShowInfo(string.Format("Done notified colleagues to delete repo {0}", this.Name));
 				});
 			}
 		}
 
-		[DataMember]
-		public Uri Path
+		public string PathString
 		{
-			get { return _path; }
+			get { return Path != null ? Path.ToString() : null; }
 			set
 			{
-				_path = value;
-				NotifyPropertyChanged("Path");
+				Uri test = null;
+				try
+				{
+					test = new Uri(value, UriKind.Absolute);
+				}
+				catch(Exception)
+				{
+					test = null;
+				}
+				Path = test;
+				NotifyPropertyChanged("PathString");
 			}
 		}
+
+		[DataMember]
+		public Uri Path { get; set; }
 
 		[DataMember]
 		public string Name
@@ -59,8 +69,10 @@ namespace Infrastructure.Models
 			}
 		}
 
+		public enum SourceControlType { Svn, Tfs }
+
 		[DataMember]
-		public string Type
+		public SourceControlType Type
 		{
 			get { return _type; }
 			set
@@ -83,14 +95,12 @@ namespace Infrastructure.Models
 			}
 		}
 
-		private string _password;
-
 		[DataMember]
 		public string EncodedPassword { get; set; }
 
 		public string Password
 		{
-			get { return _password; }
+			get { return !string.IsNullOrWhiteSpace(EncodedPassword) ? Encoding.UTF8.GetString(Convert.FromBase64String(EncodedPassword)) : null; }
 			set
 			{
 				EncodedPassword = null;
@@ -98,9 +108,56 @@ namespace Infrastructure.Models
 				{
 					EncodedPassword = Convert.ToBase64String(Encoding.UTF8.GetBytes(value));
 				}
-				_password = value;
 				NotifyPropertyChanged("Password");
 			}
+		}
+
+		#region Implementation of IDataErrorInfo
+
+		public string Error
+		{
+			get { throw new NotImplementedException(); }
+		}
+
+		public string this[string columnName]
+		{
+			get
+			{
+				string result = null;
+				switch(columnName)
+				{
+					case "PathString":
+						if(string.IsNullOrEmpty(PathString) || !new Uri(PathString).IsAbsoluteUri)
+						{
+							result = "Please enter an absolute Url.";
+						}
+						break;
+					case "Name":
+						if(string.IsNullOrEmpty(Name))
+						{
+							result = "Please enter a nickname for this repository.";
+						}
+						break;
+					case "Password":
+						if(string.IsNullOrEmpty(Password) && !string.IsNullOrWhiteSpace(UserName))
+						{
+							result = "Your password is weak.  Weakness will not be tolerated.";
+						}
+						break;
+				}
+				return result;
+			}
+		}
+
+		#endregion
+
+		public void Overwrite(Repository repoBeforeEdit)
+		{
+			this.Path = repoBeforeEdit.Path;
+			this.UserName = repoBeforeEdit.UserName;
+			this.Name = repoBeforeEdit.Name;
+			this.Type = repoBeforeEdit.Type;
+			this.Password = repoBeforeEdit.Password;
 		}
 	}
 }

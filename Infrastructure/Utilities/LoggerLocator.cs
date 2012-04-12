@@ -12,7 +12,7 @@ namespace Infrastructure.Utilities
 	{
 		public static ILoggerFacade GetSharedLogger()
 		{
-			return Helpers.GetSharedInstance<ILoggerFacade>();
+			return Container.GetSharedInstance<ILoggerFacade>();
 		}
 	}
 }

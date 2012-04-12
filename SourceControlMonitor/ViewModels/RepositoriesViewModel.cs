@@ -7,21 +7,12 @@ using Infrastructure.Settings;
 using Infrastructure.Utilities;
 using SourceControlMonitor.Interfaces;
 using System.Collections.ObjectModel;
+using Infrastructure;
 
 namespace SourceControlMonitor.ViewModels
 {
 	public class RepositoriesViewModel : ViewModelBase, IRepositoriesViewModel
 	{
-		public RepositoriesViewModel()
-		{
-			ApplicationSettings.Instance.SvnRepositories = new ObservableCollectionEx<Repository>()
-			{
-				new Repository() { Name = "MEFedMVVM", Path = new Uri("https://mefedmvvm.svn.codeplex.com/svn/")},
-			    //new Repository() { Name = "AccessData", Path = new Uri("https://addev/svn/ad/trunk/world/MPE")}
-			};
-			ApplicationSettings.Save();
-		}
-
 		public ObservableCollectionEx<Repository> Repositories
 		{
 			get { return ApplicationSettings.Instance.SvnRepositories; }
@@ -32,5 +23,7 @@ namespace SourceControlMonitor.ViewModels
 				NotifyPropertyChanged("SvnRepositories");
 			}
 		}
+
+		public DelegateCommand OnAddClick { get { return new DelegateCommand((ignore) => Mediator.NotifyColleaguesAsync<AddRepositoryEvent>(null)); } }
 	}
 }

@@ -10,7 +10,7 @@ namespace Infrastructure.Utilities
 	{
 		public static List<ISourceControlDataService> GetSharedServices()
 		{
-			return Helpers.GetSharedInstances<ISourceControlDataService>();
+			return Container.GetSharedInstances<ISourceControlDataService>();
 		}
 	}
 }

@@ -121,6 +121,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Interfaces\ISourceControlController.cs" />
+    <Compile Include="Controllers\SourceControlController.cs" />
+    <Compile Include="Convertors\TypeToImageConverter.cs" />
     <Compile Include="Interfaces\IMenuView.cs" />
     <Compile Include="Interfaces\IMenuViewModel.cs" />
     <Compile Include="Interfaces\IShellViewModel.cs" />
@@ -128,18 +131,24 @@
     <Compile Include="SampleData\RevisionHistoryViewModelSampleDataSource\RevisionHistoryViewModelSampleDataSource.xaml.cs">
       <DependentUpon>RevisionHistoryViewModelSampleDataSource.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Interfaces\IRepositoryEditorViewModel.cs" />
     <Compile Include="ViewModels\MenuViewModel.cs" />
     <Compile Include="ViewModels\RepositoriesViewModel.cs" />
+    <Compile Include="ViewModels\RepositoryEditorViewModel.cs" />
     <Compile Include="ViewModels\RevisionHistoryViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="Interfaces\IRepositoriesViewModel.cs" />
     <Compile Include="Interfaces\IRepositoriesView.cs" />
     <Compile Include="Interfaces\IRevisionHistoryViewModel.cs" />
+    <Compile Include="Interfaces\IRepositoryEditorView.cs" />
     <Compile Include="Views\MenuView.xaml.cs">
       <DependentUpon>MenuView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\RepositoriesView.xaml.cs">
       <DependentUpon>RepositoriesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\RepositoryEditorView.xaml.cs">
+      <DependentUpon>RepositoryEditorView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\RevisionHistoryView.xaml.cs">
       <DependentUpon>RevisionHistoryView.xaml</DependentUpon>
@@ -175,6 +184,10 @@
     <Page Include="Themes\WhistlerBlue.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\RepositoryEditorView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ShellView.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -271,6 +284,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <PropertyGroup>
