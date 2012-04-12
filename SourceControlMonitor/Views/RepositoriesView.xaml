@@ -48,15 +48,26 @@
                 </StackPanel>
             </Button>
         </StackPanel>
-        <ListBox Grid.Row="1" ItemsSource="{Binding Repositories}">
+        <ListBox Grid.Row="1" ItemsSource="{Binding Repositories}" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch">
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
+                </Style>
+            </ListBox.ItemContainerStyle>
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Border BorderBrush="LightBlue" BorderThickness="1" Background="White">
-                        <StackPanel Orientation="Horizontal">
+                    <Border BorderBrush="LightBlue" BorderThickness="1" Background="White" HorizontalAlignment="Stretch">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
                             <Image Source="{Binding Type, Converter={StaticResource TypeToImageConverter}}" Width="24" Margin="0,0,8,0" />
-                            <TextBlock Text="{Binding Name}" FontStyle="Italic" Margin="0,0,8,0" VerticalAlignment="Center" />
+                            <TextBlock Grid.Column="1" Text="{Binding Name}" FontStyle="Italic" Margin="0,0,8,0" VerticalAlignment="Center" />
                             <Image Source="..\Resources\Delete.png" Width="16" Margin="0,0,8,0" local:CommandBehavior.Event="MouseDown" 
-                                    local:CommandBehavior.Command="{Binding OnDeleteClick}">
+                                    local:CommandBehavior.Command="{Binding OnDeleteClick}" Grid.Column="2">
                                 <Image.Triggers>
                                     <EventTrigger RoutedEvent="Image.MouseEnter">
                                         <BeginStoryboard Storyboard="{StaticResource expandStoryboard}" />
@@ -70,7 +81,7 @@
                                 </Image.RenderTransform>
                             </Image>
                             <Image Source="..\Resources\Edit.png" Width="16" Margin="0,0,8,0" local:CommandBehavior.Event="MouseDown" 
-                                    local:CommandBehavior.Command="{Binding OnEditClick}">
+                                    local:CommandBehavior.Command="{Binding OnEditClick}" Grid.Column="3">
                                 <Image.Triggers>
                                     <EventTrigger RoutedEvent="Image.MouseEnter">
                                         <BeginStoryboard Storyboard="{StaticResource expandStoryboard}" />
@@ -83,7 +94,7 @@
                                     <ScaleTransform ScaleX="1" ScaleY="1"/>
                                 </Image.RenderTransform>
                             </Image>
-                        </StackPanel>
+                        </Grid>
                     </Border>
                 </DataTemplate>
             </ListBox.ItemTemplate>

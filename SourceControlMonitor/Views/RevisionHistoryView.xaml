@@ -30,7 +30,6 @@
     		<DataGrid.RowDetailsTemplate>
     			<DataTemplate>
                     <Grid ScrollViewer.CanContentScroll="False">
-    					<!--TODO: Add event handler for file selection (double click?); should diff-->
                         <ListBox ItemsSource="{Binding ItemChanges}">
     						<ListBox.ItemTemplate>
     							<DataTemplate>
