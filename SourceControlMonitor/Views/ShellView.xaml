@@ -42,6 +42,6 @@
             </tc:TransitionElement.Transition>
         </tc:TransitionElement>
         <xctk:BusyIndicator Grid.ColumnSpan="2" Grid.RowSpan="2" IsBusy="{Binding IsBusy, FallbackValue=False}" />
-        <xctk:ChildWindow CloseButtonStyle="{x:Null}" Name="childWindow" WindowState="{Binding IsOpen}" Grid.RowSpan="2" Grid.ColumnSpan="2" WindowStartupLocation="Center" IsModal="True" Content="{Binding ChildWindowContent}" />
+        <xctk:ChildWindow CloseButtonStyle="{x:Null}" Name="childWindow" WindowState="{Binding ChildWindowState}" Grid.RowSpan="2" Grid.ColumnSpan="2" WindowStartupLocation="Center" IsModal="True" Content="{Binding ChildWindowContent}" />
     </Grid>
 </r:RibbonWindow>

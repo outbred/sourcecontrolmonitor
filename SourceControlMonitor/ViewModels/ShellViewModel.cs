@@ -43,6 +43,8 @@ namespace SourceControlMonitor.ViewModels
 			});
 			Mediator.Subscribe<EditRepositoryEvent>(showChildWindow);
 			Mediator.Subscribe<AddRepositoryEvent>(showChildWindow);
+
+			Mediator.Subscribe<HideChildWindowEvent>(ignore => ChildWindowState = WindowState.Closed);
 		}
 
 		private object _menuView;
