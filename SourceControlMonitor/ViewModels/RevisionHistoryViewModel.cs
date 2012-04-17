@@ -54,7 +54,7 @@ namespace SourceControlMonitor.ViewModels
 
 				if(repos != null)
 				{
-					repos.ForEach(r =>
+					repos.Where(r => r != null).ToList().ForEach(r =>
 					{
 						if(!_histories.ContainsKey(r))
 						{
@@ -79,6 +79,7 @@ namespace SourceControlMonitor.ViewModels
 				{
 					_alreadyUpdating = true;
 					Status = "Updating...";
+					CurrentRepositories.RemoveAll(c => c == null);
 				}
 
 				// match the repo to its service...could be done by the repo itself (??)

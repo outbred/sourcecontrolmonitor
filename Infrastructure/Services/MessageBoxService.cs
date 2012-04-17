@@ -101,7 +101,7 @@ namespace Infrastructure.Services
 						result = MessageBox.Show(message, caption, MessageBoxButton.YesNo, MessageBoxImage.Question);
 					}
 				});
-				return result == MessageBoxResult.OK;
+				return result == MessageBoxResult.Yes;
 			}
 			return null;
 		}

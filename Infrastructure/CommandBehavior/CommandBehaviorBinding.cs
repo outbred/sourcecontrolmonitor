@@ -47,6 +47,11 @@ namespace AttachedCommandBehavior
 		//Creates an EventHandler on runtime and registers that handler to the Event specified
 		public void BindEvent(DependencyObject owner, string eventName)
 		{
+			if(string.IsNullOrWhiteSpace(eventName))
+			{
+				return;
+			}
+
 			EventName = eventName;
 			Owner = owner;
 			Event = Owner.GetType().GetEvent(EventName, BindingFlags.Public | BindingFlags.Instance);

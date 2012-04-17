@@ -21,9 +21,21 @@ namespace SourceControlMonitor.ViewModels
 			if(ApplicationSettings.Instance.Repositories.Count > 0)
 			{
 				Repositories.View.MoveCurrentToFirst();
-				Mediator.NotifyColleaguesAsync<RepositoriesSelectedEvent>(new List<Repository>()
-				                                                          	{Repositories.View.CurrentItem as Repository});
+				Mediator.NotifyColleaguesAsync<RepositoriesSelectedEvent>(new List<Repository>() { Repositories.View.CurrentItem as Repository });
 			}
+
+			Mediator.Subscribe<DeleteRepositoryEvent>(r =>
+			{
+				var repo = r as Repository;
+				if(repo != null && ApplicationSettings.Instance.Repositories.Contains(repo))
+				{
+					UiDispatcherService.InvokeAsync(() =>
+					                                	{
+					                                		ApplicationSettings.Instance.Repositories.Remove(repo);
+					                                		ApplicationSettings.Save();
+					                                	});
+				}
+			});
 		}
 
 		public CollectionViewSource Repositories { get; set; }

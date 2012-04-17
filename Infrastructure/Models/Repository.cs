@@ -4,6 +4,7 @@ using System.Text;
 using Infrastructure.Utilities;
 using Infrastructure.Interfaces;
 using System.ComponentModel;
+using Infrastructure.Settings;
 
 namespace Infrastructure.Models
 {
@@ -18,10 +19,7 @@ namespace Infrastructure.Models
 		{
 			get
 			{
-				return new DelegateCommand(ignore =>
-				{
-					Mediator.NotifyColleaguesAsync<EditRepositoryEvent>(this);
-				});
+				return new DelegateCommand(ignore => Mediator.NotifyColleaguesAsync<EditRepositoryEvent>(this));
 			}
 		}
 
@@ -31,7 +29,10 @@ namespace Infrastructure.Models
 			{
 				return new DelegateCommand(ignore =>
 				{
-					Mediator.NotifyColleaguesAsync<DeleteRepositoryEvent>(this);
+					if(MessageBoxService.ShowYesNo(string.Format("Are you sure you want to delete repository '{0}'?", this.Name)) ?? false)
+					{
+						Mediator.NotifyColleaguesAsync<DeleteRepositoryEvent>(this);
+					}
 				});
 			}
 		}

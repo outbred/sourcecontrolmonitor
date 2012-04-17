@@ -32,7 +32,19 @@ namespace DataServices
 
 		public override void GetLogAsync(Repository repo, Action<ReadOnlyObservableCollection<ICommitItem>> onComplete, int limit = 30, long? startRevision = null, long? endRevision = null)
 		{
-			var task = Task.Factory.StartNew(() => onComplete(GetLog(repo, limit, startRevision, endRevision)));
+			var task = Task.Factory.StartNew(() =>
+												{
+													try
+													{
+														onComplete(GetLog(repo, limit, startRevision, endRevision));
+													}
+													catch(Exception ex)
+													{
+														_mediator.NotifyColleaguesAsync<EndBusyEvent>(null);
+														MessageBoxLocator.GetSharedService().ShowError(string.Format("Unable to get the log from '{0}'.\n\n{1}", repo.Path, ex.Message), "Error Downloading Log");
+														onComplete(null);
+													}
+												});
 			task.Wait(new TimeSpan(0, 0, 0, repo.SecondsToTimeoutDownload));
 			if(task.Status != TaskStatus.RanToCompletion)
 			{
@@ -57,6 +69,7 @@ namespace DataServices
 			// not reliable...unfortunately
 			if(!AddressIsAccessible(repo))
 			{
+				MessageBoxLocator.GetSharedService().ShowError(string.Format("Unable to connect to '{0}'.", repo.Path.ToString()));
 				return null;
 			}
 
