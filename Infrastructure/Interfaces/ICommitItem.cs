@@ -6,12 +6,12 @@ namespace Infrastructure.Interfaces
 {
 	public interface ICommitItem
 	{
-		string Author { get; }
-		DateTime Date { get; }
-		string LogMessage { get; }
-		long Revision { get; }
-		bool? HasLocalEditsOnAnyFile { get; }
-		ObservableCollectionEx<IItemChanged> ItemChanges { get; }
+		string Author { get; set; }
+		DateTime Date { get; set; }
+		string LogMessage { get; set; }
+		long Revision { get; set; }
+		bool? HasLocalEditsOnAnyFile { get; set; }
+		ObservableCollectionEx<IItemChanged> ItemChanges { get; set; }
 	}
 
 	public interface IItemChanged

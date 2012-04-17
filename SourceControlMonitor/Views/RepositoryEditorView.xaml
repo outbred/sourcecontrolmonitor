@@ -3,7 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:w="clr-namespace:Infrastructure.Utilities;assembly=Infrastructure" mc:Ignorable="d" 
+             xmlns:w="clr-namespace:Infrastructure.Utilities;assembly=Infrastructure" 
+             Padding="10"
+             mc:Ignorable="d" 
              MinWidth="400">
     <Grid>
         <Grid.ColumnDefinitions>
@@ -17,10 +19,13 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid.Resources>
             <Style TargetType="TextBlock">
                 <Setter Property="HorizontalAlignment" Value="Right" />
+                <Setter Property="VerticalAlignment" Value="Center" />
             </Style>
             <Style TargetType="{x:Type TextBox}">
                 <Setter Property="VerticalAlignment" Value="Center" />
@@ -57,10 +62,16 @@
                      w:PasswordHelper.Password="{Binding Repository.Password, UpdateSourceTrigger=LostFocus, ValidatesOnDataErrors=True, NotifyOnValidationError=True}" 
                      Grid.Row="3" Grid.Column="1" />
 
-        <TextBlock Text="Timeout (s): " Grid.Row="4" ToolTip="The timeout before we give up downloading the log, etc."/>
+        <TextBlock Text="Update Timeout (s): " Grid.Row="4" ToolTip="The timeout before we give up downloading the log, etc."/>
         <TextBox Text="{Binding Repository.SecondsToTimeoutDownload, FallbackValue=15}" Grid.Row="4" Width="50" HorizontalAlignment="Left" Grid.Column="1" />
 
-        <StackPanel Grid.Row="5" Margin="0,30,0,0" Grid.ColumnSpan="2" HorizontalAlignment="Right" Orientation="Horizontal" >
+        <TextBlock Text="Update Interval (m): " Grid.Row="5" ToolTip="Update interval to refresh the log."/>
+        <TextBox Text="{Binding Repository.UpdateInterval, FallbackValue=3}" Grid.Row="5" Width="50" HorizontalAlignment="Left" Grid.Column="1" />
+
+        <TextBlock Text="Suspend Updates: " Grid.Row="6" ToolTip="If checked, updates will not be automatically pulled down."/>
+        <CheckBox IsChecked="{Binding Repository.SuspendUpdates, FallbackValue=False}" Grid.Row="6" VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Column="1" />
+
+        <StackPanel Grid.Row="7" Margin="0,30,0,0" Grid.ColumnSpan="2" HorizontalAlignment="Right" Orientation="Horizontal" >
             <Button Width="75" Height="25" Content="{Binding AcceptText, FallbackValue=Ok}" Command="{Binding OnOkClick}" Margin="0,0,20,0" />
             <Button Width="75" Height="25" Content="Cancel" Command="{Binding OnCancelClick}" />
         </StackPanel>

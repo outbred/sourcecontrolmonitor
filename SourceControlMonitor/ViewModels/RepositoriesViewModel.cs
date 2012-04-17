@@ -17,11 +17,11 @@ namespace SourceControlMonitor.ViewModels
 		public RepositoriesViewModel()
 		{
 			Repositories = new CollectionViewSource { Source = ApplicationSettings.Instance.Repositories };
-			Repositories.View.CurrentChanged += (s, e) => Mediator.NotifyColleaguesAsync<RepositoriesSelectedEvent>(new List<Repository>() { Repositories.View.CurrentItem as Repository });
+			Repositories.View.CurrentChanged += (s, e) => Mediator.NotifyColleaguesAsync<RepositorySelectedEvent>(Repositories.View.CurrentItem as Repository);
 			if(ApplicationSettings.Instance.Repositories.Count > 0)
 			{
 				Repositories.View.MoveCurrentToFirst();
-				Mediator.NotifyColleaguesAsync<RepositoriesSelectedEvent>(new List<Repository>() { Repositories.View.CurrentItem as Repository });
+				Mediator.NotifyColleaguesAsync<RepositorySelectedEvent>(Repositories.View.CurrentItem as Repository);
 			}
 
 			Mediator.Subscribe<DeleteRepositoryEvent>(r =>
@@ -30,10 +30,10 @@ namespace SourceControlMonitor.ViewModels
 				if(repo != null && ApplicationSettings.Instance.Repositories.Contains(repo))
 				{
 					UiDispatcherService.InvokeAsync(() =>
-					                                	{
-					                                		ApplicationSettings.Instance.Repositories.Remove(repo);
-					                                		ApplicationSettings.Save();
-					                                	});
+					{
+						ApplicationSettings.Instance.Repositories.Remove(repo);
+						ApplicationSettings.Save();
+					});
 				}
 			});
 		}

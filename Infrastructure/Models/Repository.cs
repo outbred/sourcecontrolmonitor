@@ -1,6 +1,10 @@
 using System;
+using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
+using System.Windows.Data;
+using System.Windows.Threading;
+using Infrastructure.Services;
 using Infrastructure.Utilities;
 using Infrastructure.Interfaces;
 using System.ComponentModel;
@@ -13,7 +17,81 @@ namespace Infrastructure.Models
 	{
 		private string _name;
 		private RepositoryType _type;
-		private Uri _path;
+		private ISourceControlDataService _dataService = null;
+		private DispatcherTimer _historyChecker = null;
+		private ObservableCollectionEx<ICommitItem> _items = null;
+		private object _locker = null;
+		private bool _alreadyUpdating;
+
+		public void Initialize()
+		{
+			_items = new ObservableCollectionEx<ICommitItem>();
+			_locker = new object();
+			UiDispatcherService.Invoke(() =>
+			{
+				CommitItems = CollectionViewSource.GetDefaultView(_items);
+				var listCollectionView = CommitItems as ListCollectionView;
+				if(listCollectionView != null)
+				{
+					listCollectionView.CustomSort = new CommitItemSorter() { Direction = ListSortDirection.Descending };
+				}
+			});
+
+
+			_dataService = (from d in DataServiceLocator.GetSharedServices()
+							where this.Type == d.RepositoryType
+							select d).FirstOrDefault();
+
+			this.RefreshCommitHistory();
+
+			_historyChecker = new DispatcherTimer() { IsEnabled = false, Interval = new TimeSpan(0, 0, UpdateInterval ?? 3, 0) };
+			_historyChecker.Tick += (s, e) => RefreshCommitHistory();
+			_historyChecker.IsEnabled = true;
+			_historyChecker.Start();
+		}
+
+		public void RefreshCommitHistory()
+		{
+			long? startRevision = this._items.OrderByDescending(item => item.Revision).Select(item => item.Revision).FirstOrDefault();
+
+			if(!_alreadyUpdating && _dataService != null)
+			{
+				lock(_locker)
+				{
+					_alreadyUpdating = true;
+					Status = "Updating...";
+				}
+
+				_dataService.GetLogAsync(this, items =>
+				{
+					if(items != null)
+					{
+						UiDispatcherService.InvokeAsync(() =>
+						{
+							this._items.MergeAdd(items,
+								(item, collection) => collection.FirstOrDefault(c => c.Revision == item.Revision),
+								(itemOld, itemNew) =>
+								{
+									itemOld.Revision = itemNew.Revision;
+									itemOld.Author = itemNew.Author;
+									itemOld.Date = itemNew.Date;
+									itemOld.HasLocalEditsOnAnyFile = itemNew.HasLocalEditsOnAnyFile;
+									itemOld.LogMessage = itemOld.LogMessage;
+									itemOld.ItemChanges = itemNew.ItemChanges;
+								});
+
+							this._items.Count();
+						});
+					}
+
+					lock(_locker)
+					{
+						_alreadyUpdating = false;
+						Status = string.Format("Last Update: {0}", DateTime.Now.ToShortTimeString());
+					}
+				}, startRevision: startRevision);
+			}
+		}
 
 		public DelegateCommand OnEditClick
 		{
@@ -53,6 +131,17 @@ namespace Infrastructure.Models
 				}
 				Path = test;
 				NotifyPropertyChanged("PathString");
+			}
+		}
+
+		private string _status;
+		public string Status
+		{
+			get { return _status; }
+			set
+			{
+				_status = value;
+				NotifyPropertyChanged("Status");
 			}
 		}
 
@@ -123,6 +212,53 @@ namespace Infrastructure.Models
 			{
 				_secondsToTimeoutDownload = value;
 				NotifyPropertyChanged("SecondsToTimeoutDownload");
+			}
+		}
+
+		private ICollectionView _commitItems;
+		public ICollectionView CommitItems
+		{
+			get { return _commitItems; }
+			set
+			{
+				_commitItems = value;
+				NotifyPropertyChanged("CommitItems");
+			}
+		}
+
+		private int? _updateInterval;
+		[DataMember]
+		public int? UpdateInterval
+		{
+			get { return _updateInterval; }
+			set
+			{
+				_updateInterval = value;
+				NotifyPropertyChanged("UpdateInterval");
+			}
+		}
+
+		private bool _suspendUpdates;
+		[DataMember]
+		public bool SuspendUpdates
+		{
+			get { return _suspendUpdates; }
+			set
+			{
+				_suspendUpdates = value;
+				NotifyPropertyChanged("SuspendUpdates");
+			}
+		}
+
+		private bool _isSelected;
+		[DataMember]
+		public bool IsSelected
+		{
+			get { return _isSelected; }
+			set
+			{
+				_isSelected = value;
+				NotifyPropertyChanged("IsSelected");
 			}
 		}
 

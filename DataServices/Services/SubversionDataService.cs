@@ -33,22 +33,21 @@ namespace DataServices
 		public override void GetLogAsync(Repository repo, Action<ReadOnlyObservableCollection<ICommitItem>> onComplete, int limit = 30, long? startRevision = null, long? endRevision = null)
 		{
 			var task = Task.Factory.StartNew(() =>
-												{
-													try
-													{
-														onComplete(GetLog(repo, limit, startRevision, endRevision));
-													}
-													catch(Exception ex)
-													{
-														_mediator.NotifyColleaguesAsync<EndBusyEvent>(null);
-														MessageBoxLocator.GetSharedService().ShowError(string.Format("Unable to get the log from '{0}'.\n\n{1}", repo.Path, ex.Message), "Error Downloading Log");
-														onComplete(null);
-													}
-												});
+			{
+				try
+				{
+					onComplete(GetLog(repo, limit, startRevision, endRevision));
+				}
+				catch(Exception ex)
+				{
+					MessageBoxLocator.GetSharedService().ShowError(string.Format("Unable to get the log from '{0}'.\n\n{1}", repo.Path, ex.Message), "Error Downloading Log");
+					onComplete(null);
+				}
+			});
+
 			task.Wait(new TimeSpan(0, 0, 0, repo.SecondsToTimeoutDownload));
 			if(task.Status != TaskStatus.RanToCompletion)
 			{
-				_mediator.NotifyColleaguesAsync<EndBusyEvent>(null);
 				MessageBoxLocator.GetSharedService().ShowError(string.Format("Unable to get the log from '{0}'.", repo.Path), "Error Downloading Log");
 				onComplete(null);
 			}
@@ -78,7 +77,6 @@ namespace DataServices
 			{
 				var allItems = new List<ICommitItem>();
 
-				_mediator.NotifyColleaguesAsync<BeginBusyEvent>("Downloading log...");
 				if(!string.IsNullOrWhiteSpace(repo.UserName))
 				{
 					client.Authentication.DefaultCredentials = new NetworkCredential(repo.UserName, repo.Password);
@@ -92,7 +90,6 @@ namespace DataServices
 					var root = repo.Path.ToString().EndsWith("svn/") ? repo.Path.ToString() : repo.Path.ToString().Remove(rootIndex + 4);
 					allItems.AddRange(logItems.ToCommitItems(new Uri(root), _mediator, repo.SecondsToTimeoutDownload, OnViewChangeDetails));
 				}
-				_mediator.NotifyColleaguesAsync<EndBusyEvent>(null);
 				return new ReadOnlyObservableCollection<ICommitItem>(new ObservableCollection<ICommitItem>(allItems));
 			}
 		}
@@ -133,13 +130,13 @@ namespace DataServices
 									previousFile.Flush();
 								}
 
-								var process = _diffService.ShowDiffs(prevFileOnDisk, latFileOnDisk);
-
 								_mediator.NotifyColleaguesAsync<EndBusyEvent>(null);
 
 								// background this so that our callbacks are not waiting on this complete (unnecessary)
 								Task.Factory.StartNew(() =>
 								{
+									var process = _diffService.ShowDiffs(prevFileOnDisk, latFileOnDisk);
+
 									if(process != null)
 									{
 										process.WaitForExit();
@@ -158,7 +155,7 @@ namespace DataServices
 				task.Wait(new TimeSpan(0, 0, 0, secondsToTimeout));
 				if(task.Status != TaskStatus.RanToCompletion)
 				{
-					MessageBoxLocator.GetSharedService().ShowError("Unable to download unified diff. Dash it all!");
+					MessageBoxLocator.GetSharedService().ShowError("Unable to download change details.  Dash it all!");
 					_mediator.NotifyColleaguesAsync<EndBusyEvent>(null);
 				}
 			});

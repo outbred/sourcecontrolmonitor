@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using Infrastructure.Utilities;
 using System.IO;
 
@@ -29,7 +30,9 @@ namespace Infrastructure.Services
 				return null;
 			}
 
-			return Process.Start(new ProcessStartInfo { FileName = _beyondCompare, CreateNoWindow = true, Arguments = string.Format("{1} {0} ", fileNameLeft, fileNameRight) });
+			var process = Process.Start(new ProcessStartInfo { FileName = _beyondCompare, CreateNoWindow = true, Arguments = string.Format("{1} {0} ", fileNameLeft, fileNameRight) });
+			Thread.Sleep(100);
+			return process;
 		}
 
 		public bool IsSupported
