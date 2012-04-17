@@ -14,10 +14,10 @@ namespace SourceControlMonitor.Convertors
 
 		public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
 		{
-			Infrastructure.Models.Repository.SourceControlType type;
+			Infrastructure.Models.Repository.RepositoryType type;
 			if(Enum.TryParse(value.ToString(), out type))
 			{
-				return type == Repository.SourceControlType.Svn
+				return type == Repository.RepositoryType.Svn
 						? new BitmapImage(new Uri("pack://application:,,,../Resources/svn48.png", UriKind.Absolute))
 						: null;
 			}

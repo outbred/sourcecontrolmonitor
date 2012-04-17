@@ -70,14 +70,10 @@ namespace SourceControlMonitor.ViewModels
 				{
 					if(_isNewRepo)
 					{
-						if(ApplicationSettings.Instance.SvnRepositories == null)
-						{
-							ApplicationSettings.Instance.SvnRepositories = new ObservableCollectionEx<Repository>();
-						}
-						ApplicationSettings.Instance.SvnRepositories.Add(Repository);
+						ApplicationSettings.Instance.Repositories.Add(Repository);
 					}
 					ApplicationSettings.Save();
-					Mediator.NotifyColleaguesAsync<RefreshRepositoryHistories>(null);
+					Mediator.NotifyColleaguesAsync<RefreshRepositoryHistoriesEvent>(null);
 					Mediator.NotifyColleaguesAsync<HideChildWindowEvent>(null);
 				});
 			}

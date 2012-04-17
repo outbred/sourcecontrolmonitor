@@ -18,7 +18,15 @@ namespace Infrastructure.Services
 			{
 				_uiDispatcherService.Invoke(() =>
 				{
-					MessageBox.Show(_uiDispatcherService.CurrentApplication, message, caption, MessageBoxButton.OK, MessageBoxImage.Error);
+					if(_uiDispatcherService.CurrentApplication != null)
+					{
+						MessageBox.Show(_uiDispatcherService.CurrentApplication, message, caption, MessageBoxButton.OK,
+										MessageBoxImage.Error);
+					}
+					else
+					{
+						MessageBox.Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Error);
+					}
 				});
 			}
 		}
@@ -29,7 +37,15 @@ namespace Infrastructure.Services
 			{
 				_uiDispatcherService.Invoke(() =>
 				{
-					MessageBox.Show(_uiDispatcherService.CurrentApplication, message, caption, MessageBoxButton.OK, MessageBoxImage.Information);
+					if(_uiDispatcherService.CurrentApplication != null)
+					{
+						MessageBox.Show(_uiDispatcherService.CurrentApplication, message, caption, MessageBoxButton.OK,
+										MessageBoxImage.Information);
+					}
+					else
+					{
+						MessageBox.Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Information);
+					}
 				});
 			}
 		}
@@ -47,7 +63,15 @@ namespace Infrastructure.Services
 				var result = MessageBoxResult.Cancel;
 				_uiDispatcherService.Invoke(() =>
 				{
-					result = MessageBox.Show(_uiDispatcherService.CurrentApplication, message, caption, MessageBoxButton.OKCancel, MessageBoxImage.Question);
+					if(_uiDispatcherService.CurrentApplication != null)
+					{
+						result = MessageBox.Show(_uiDispatcherService.CurrentApplication, message, caption, MessageBoxButton.OKCancel,
+												 MessageBoxImage.Question);
+					}
+					else
+					{
+						result = MessageBox.Show(message, caption, MessageBoxButton.OKCancel, MessageBoxImage.Question);
+					}
 				});
 				return result == MessageBoxResult.OK;
 			}
@@ -67,7 +91,15 @@ namespace Infrastructure.Services
 				var result = MessageBoxResult.Cancel;
 				_uiDispatcherService.Invoke(() =>
 				{
-					result = MessageBox.Show(_uiDispatcherService.CurrentApplication, message, caption, MessageBoxButton.YesNo, MessageBoxImage.Question);
+					if(_uiDispatcherService.CurrentApplication != null)
+					{
+						result = MessageBox.Show(_uiDispatcherService.CurrentApplication, message, caption, MessageBoxButton.YesNo,
+												 MessageBoxImage.Question);
+					}
+					else
+					{
+						result = MessageBox.Show(message, caption, MessageBoxButton.YesNo, MessageBoxImage.Question);
+					}
 				});
 				return result == MessageBoxResult.OK;
 			}

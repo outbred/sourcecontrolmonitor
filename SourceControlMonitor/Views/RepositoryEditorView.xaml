@@ -16,6 +16,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid.Resources>
             <Style TargetType="TextBlock">
@@ -55,8 +56,11 @@
         <PasswordBox w:PasswordHelper.Attach="True" 
                      w:PasswordHelper.Password="{Binding Repository.Password, UpdateSourceTrigger=LostFocus, ValidatesOnDataErrors=True, NotifyOnValidationError=True}" 
                      Grid.Row="3" Grid.Column="1" />
-        
-        <StackPanel Grid.Row="4" Margin="0,30,0,0" Grid.ColumnSpan="2" HorizontalAlignment="Right" Orientation="Horizontal" >
+
+        <TextBlock Text="Timeout (s): " Grid.Row="4" ToolTip="The timeout before we give up downloading the log, etc."/>
+        <TextBox Text="{Binding Repository.SecondsToTimeoutDownload, FallbackValue=15}" Grid.Row="4" Width="50" HorizontalAlignment="Left" Grid.Column="1" />
+
+        <StackPanel Grid.Row="5" Margin="0,30,0,0" Grid.ColumnSpan="2" HorizontalAlignment="Right" Orientation="Horizontal" >
             <Button Width="75" Height="25" Content="{Binding AcceptText, FallbackValue=Ok}" Command="{Binding OnOkClick}" Margin="0,0,20,0" />
             <Button Width="75" Height="25" Content="Cancel" Command="{Binding OnCancelClick}" />
         </StackPanel>

@@ -216,7 +216,7 @@ namespace Expression.Blend.SampleData.RevisionHistoryViewModelSampleDataSource
 				if (this._ChangeType != value)
 				{
 					this._ChangeType = value;
-					this.OnPropertyChanged("Type");
+					this.OnPropertyChanged("ChangeType");
 				}
 			}
 		}

@@ -13,5 +13,6 @@ namespace Infrastructure
 	//public class ShowChildWindowEvent { }
 	public class HideChildWindowEvent { }
 	public class AddRepositoryEvent { }
-	public class RefreshRepositoryHistories { }
+	public class RefreshRepositoryHistoriesEvent { }
+	public class RepositoriesSelectedEvent { }
 }

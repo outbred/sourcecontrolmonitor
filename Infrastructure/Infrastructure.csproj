@@ -70,8 +70,17 @@
     <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DiffDotNet">
+      <HintPath>..\Bin\DiffDotNet.exe</HintPath>
+    </Reference>
     <Reference Include="log4net, Version=1.2.11.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Menees">
+      <HintPath>..\Bin\Menees.dll</HintPath>
+    </Reference>
+    <Reference Include="MeneesDiffUtils">
+      <HintPath>..\Bin\MeneesDiffUtils.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Expression.Interactions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System" />
@@ -98,6 +107,11 @@
     <Compile Include="Events.cs" />
     <Compile Include="Interfaces\IPopUpView.cs" />
     <Compile Include="Interfaces\IPopUpViewModel.cs" />
+    <Compile Include="Interfaces\IFileDiffService.cs" />
+    <Compile Include="Services\BeyondCompareDiffService.cs" />
+    <Compile Include="Utilities\CommitItemSorter.cs" />
+    <Compile Include="Services\DiffDotNetService.cs" />
+    <Compile Include="Utilities\DiffServiceLocator.cs" />
     <Compile Include="Utilities\PasswordHelper.cs" />
     <Compile Include="ViewModels\PopupOptions.cs" />
     <Compile Include="ViewModels\PopUpViewModel.cs" />
@@ -165,6 +179,10 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

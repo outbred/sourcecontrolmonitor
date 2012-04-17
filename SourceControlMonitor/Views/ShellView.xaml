@@ -41,7 +41,7 @@
                 <transt:TranslateTransition StartPoint="1,0" EndPoint="0,1" Duration="0:0:0.250"/>
             </tc:TransitionElement.Transition>
         </tc:TransitionElement>
-        <xctk:BusyIndicator Grid.ColumnSpan="2" Grid.RowSpan="2" IsBusy="{Binding IsBusy, FallbackValue=False}" />
+        <xctk:BusyIndicator Grid.ColumnSpan="2" Grid.RowSpan="2" IsBusy="{Binding IsBusy, FallbackValue=False}" BusyContent="{Binding IsBusyText, FallbackValue='Wait for it...'}" />
         <xctk:ChildWindow CloseButtonStyle="{x:Null}" Name="childWindow" WindowState="{Binding ChildWindowState}" Grid.RowSpan="2" Grid.ColumnSpan="2" WindowStartupLocation="Center" IsModal="True" Content="{Binding ChildWindowContent}" />
     </Grid>
 </r:RibbonWindow>

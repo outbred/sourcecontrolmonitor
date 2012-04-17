@@ -8,11 +8,11 @@ namespace Infrastructure.Controls
 	/// <typeparam name="T"></typeparam>
 	public class ConcurrentList<T> : List<T>
 	{
-		static readonly object Locker = new object();
+		readonly object _locker = new object();
 
 		public void SafeAdd(T item)
 		{
-			lock(Locker)
+			lock(_locker)
 			{
 				this.Add(item);
 			}
@@ -22,7 +22,7 @@ namespace Infrastructure.Controls
 		{
 			if(this.Contains(item))
 			{
-				lock(Locker)
+				lock(_locker)
 				{
 					this.Remove(item);
 					return true;

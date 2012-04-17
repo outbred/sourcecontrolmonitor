@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Data;
 using Infrastructure.Models;
 using Infrastructure.Settings;
 using Infrastructure.Utilities;
@@ -13,16 +14,19 @@ namespace SourceControlMonitor.ViewModels
 {
 	public class RepositoriesViewModel : ViewModelBase, IRepositoriesViewModel
 	{
-		public ObservableCollectionEx<Repository> Repositories
+		public RepositoriesViewModel()
 		{
-			get { return ApplicationSettings.Instance.SvnRepositories; }
-			set
+			Repositories = new CollectionViewSource { Source = ApplicationSettings.Instance.Repositories };
+			Repositories.View.CurrentChanged += (s, e) => Mediator.NotifyColleaguesAsync<RepositoriesSelectedEvent>(new List<Repository>() { Repositories.View.CurrentItem as Repository });
+			if(ApplicationSettings.Instance.Repositories.Count > 0)
 			{
-				ApplicationSettings.Instance.SvnRepositories = value;
-				ApplicationSettings.Save();
-				NotifyPropertyChanged("SvnRepositories");
+				Repositories.View.MoveCurrentToFirst();
+				Mediator.NotifyColleaguesAsync<RepositoriesSelectedEvent>(new List<Repository>()
+				                                                          	{Repositories.View.CurrentItem as Repository});
 			}
 		}
+
+		public CollectionViewSource Repositories { get; set; }
 
 		public DelegateCommand OnAddClick { get { return new DelegateCommand((ignore) => Mediator.NotifyColleaguesAsync<AddRepositoryEvent>(null)); } }
 	}

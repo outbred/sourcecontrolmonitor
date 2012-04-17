@@ -47,30 +47,22 @@ namespace DataServices.Test
 
 		#region Additional test attributes
 
-		private static ObservableCollectionEx<Repository> _currentRepos = null;
+		private static Repository _testRepo = null;
+		private static List<Repository> _testRepos = null;
 
 		[ClassInitialize()]
 		public static void MyClassInitialize(TestContext testContext)
 		{
-			_currentRepos = ApplicationSettings.Instance.SvnRepositories;
-			if(_currentRepos == null || !_currentRepos.Any(r => r.Path.ToString() == "https://addev/svn/ad/trunk/world/MPE"))
-			{
-				if(_currentRepos == null)
-				{
-					ApplicationSettings.Instance.SvnRepositories = new ObservableCollectionEx<Repository>();
-				}
-				ApplicationSettings.Instance.SvnRepositories.Add(new Repository() { Path = new Uri("https://addev/svn/ad/trunk/world/MPE") });
-				ApplicationSettings.Save();
-			}
+			_testRepo = new Repository() { Path = new Uri("https://addev/svn/ad/trunk/world/MPE") };
+			_testRepos =
+				new List<Repository>()
+				    {
+						new Repository() { Path = new Uri("https://mefedmvvm.svn.codeplex.com/svn", UriKind.Absolute) }, 
+						new Repository() { Path = new Uri("http://commitmonitor.googlecode.com/svn/trunk", UriKind.Absolute) } 
+					};
 		}
 
 
-		[ClassCleanup()]
-		public static void MyClassCleanup()
-		{
-			ApplicationSettings.Instance.SvnRepositories = _currentRepos;
-			ApplicationSettings.Save();
-		}
 		#endregion
 
 
@@ -82,43 +74,16 @@ namespace DataServices.Test
 		{
 			var target = new SubversionDataService();
 			int limit = 30;
-			var actual = target.GetLog(limit);
+			var actual = target.GetLog(_testRepo, limit);
 			Assert.IsNotNull(actual);
 			Assert.IsTrue(actual.Count > 0);
 			Assert.IsTrue(actual.Count == 30);
 
 			limit = 10;
-			actual = target.GetLog(limit);
+			actual = target.GetLog(_testRepo, limit);
 			Assert.IsNotNull(actual);
 			Assert.IsTrue(actual.Count > 0);
 			Assert.IsTrue(actual.Count == 10);
-		}
-
-		/// <summary>
-		///A test for GetLog
-		///</summary>
-		[TestMethod()]
-		public void GetLogForAddressesOnAddressManyAddressesTest()
-		{
-			var target = new SubversionDataService();
-			var addresses = new List<Repository>() { 
-				new Repository() { Path = new Uri("https://mefedmvvm.svn.codeplex.com/svn", UriKind.Absolute) }, 
-				new Repository() { Path = new Uri("http://commitmonitor.googlecode.com/svn/trunk", UriKind.Absolute) } 
-			};
-			ApplicationSettings.Instance.SvnRepositories = new ObservableCollectionEx<Repository>(addresses);
-			ApplicationSettings.Save();
-
-			int limit = 30;
-			var actual = target.GetLog(limit);
-			Assert.IsNotNull(actual);
-			Assert.IsTrue(actual.Count > 0);
-			Assert.IsTrue(actual.Count == 60);
-
-			limit = 10;
-			actual = target.GetLog(limit);
-			Assert.IsNotNull(actual);
-			Assert.IsTrue(actual.Count > 0);
-			Assert.IsTrue(actual.Count == 20);
 		}
 	}
 }

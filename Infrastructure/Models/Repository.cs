@@ -11,7 +11,7 @@ namespace Infrastructure.Models
 	public class Repository : ViewModelBase, IDataErrorInfo
 	{
 		private string _name;
-		private SourceControlType _type;
+		private RepositoryType _type;
 		private Uri _path;
 
 		public DelegateCommand OnEditClick
@@ -69,10 +69,10 @@ namespace Infrastructure.Models
 			}
 		}
 
-		public enum SourceControlType { Svn, Tfs }
+		public enum RepositoryType { Svn, Tfs }
 
 		[DataMember]
-		public SourceControlType Type
+		public RepositoryType Type
 		{
 			get { return _type; }
 			set
@@ -109,6 +109,19 @@ namespace Infrastructure.Models
 					EncodedPassword = Convert.ToBase64String(Encoding.UTF8.GetBytes(value));
 				}
 				NotifyPropertyChanged("Password");
+			}
+		}
+
+		private int? _secondsToTimeoutDownload;
+		[DataMember]
+		public int SecondsToTimeoutDownload
+		{
+			// default is 15
+			get { return _secondsToTimeoutDownload ?? 15; }
+			set
+			{
+				_secondsToTimeoutDownload = value;
+				NotifyPropertyChanged("SecondsToTimeoutDownload");
 			}
 		}
 

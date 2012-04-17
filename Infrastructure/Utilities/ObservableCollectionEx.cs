@@ -73,5 +73,54 @@ namespace Infrastructure.Utilities
 			}
 		}
 
+		/// <summary>
+		/// Merges two sets of data - an old and a new set.  Updates the old with new data based on isMatch.  Adds in new items only
+		/// </summary>
+		/// <param name="updated">Updated/new items</param>
+		/// <param name="isMatch">Is essentially a delegate for IEqualityComparer<T></param>
+		/// <param name="updatedItem">Delegate used to retrieve the update item (if there is one) given the old one</param>
+		public void MergeAdd(IEnumerable<T> updated, Func<T, IEnumerable<T>, bool> isMatch = null, Func<T, IEnumerable<T>, T> updatedItem = null)
+		{
+			if(updated == null)
+			{
+				return;
+			}
+
+			this.SuspendCollectionChangeNotification();
+
+			if(this.Count == 0)
+			{
+				AddRange(updated);
+			}
+			else if(isMatch == null || updatedItem == null)
+			{
+				// add new ones only...safety check
+				var toAdd = (from c in updated
+							 where !this.Contains(c)
+							 select c).ToList();
+
+				this.AddRange(toAdd);
+			}
+			else
+			{
+				// check by more advanced supplied checker
+				var toBeUpdated = (from i in this
+								   where isMatch(i, updated)
+								   select new { OldItem = i, NewItem = updatedItem(i, updated) }).ToList();
+
+				toBeUpdated.ForEach(pair =>
+				{
+					this.Remove(pair.OldItem);
+					this.Add(pair.NewItem);
+				});
+
+				var toAdd = (from newbie in updated
+							 where !this.Contains(newbie)
+							 select newbie).ToList();
+
+				this.AddRange(toAdd);
+			}
+		}
+
 	}
 }

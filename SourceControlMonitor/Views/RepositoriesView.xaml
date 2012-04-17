@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:AttachedCommandBehavior;assembly=Infrastructure" mc:Ignorable="d" 
+             xmlns:local="clr-namespace:AttachedCommandBehavior;assembly=Infrastructure"
+             xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase" mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -16,23 +17,52 @@
                 <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleX" To="1" Duration="0:0:0.2" />
                 <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleY" To="1" Duration="0:0:0.2" />
             </Storyboard>
-            <!--<Style TargetType="{x:Type Image}">
-                <Setter Property="RenderTransform">
-                    <Setter.Value>
-                        <ScaleTransform ScaleX="1" ScaleY="1"/>
-                    </Setter.Value>
-                </Setter>
+            <DataTemplate x:Key="ItemTemplate">
+                <TextBlock Text="{Binding}" Foreground="Black" />
+            </DataTemplate>
+            <DataTemplate x:Key="SelectedTemplate">
+                <TextBlock Text="{Binding}" Foreground="Black" />
+            </DataTemplate>
+            <Style TargetType="{x:Type ListBoxItem}">
+                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                <Setter Property="Opacity" Value="0.5" />
+                <Setter Property="MaxHeight" Value="15" />
+                <Setter Property="FontWeight" Value="Normal" />
                 <Style.Triggers>
-                    <Trigger Property="IsMouseOver" Value="True">
-                        <Trigger.EnterActions>
-                            <BeginStoryboard Storyboard="{StaticResource expandStoryboard}" />
-                        </Trigger.EnterActions>
-                        <Trigger.ExitActions>
-                            <BeginStoryboard Storyboard="{StaticResource shrinkStoryboard}" />
-                        </Trigger.ExitActions>
+                    <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                        <EventTrigger.Actions>
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation Duration="0:0:0.5" Storyboard.TargetProperty="MaxHeight" To="40"  />
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger.Actions>
+                    </EventTrigger>
+                    <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                        <EventTrigger.Actions>
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation Duration="0:0:0.1" Storyboard.TargetProperty="MaxHeight" To="15"  />
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger.Actions>
+                    </EventTrigger>
+                    <Trigger Property="IsSelected" Value="True" >
+                        <Trigger.Setters>
+                            <Setter Property="FontWeight" Value="Bold" />
+                            <Setter Property="Background" Value="Transparent" />
+                            <Setter Property="Foreground" Value="Black" />
+                            <Setter Property="Opacity" Value="1.0" />
+                        </Trigger.Setters>
                     </Trigger>
                 </Style.Triggers>
-            </Style>-->
+                <Style.Resources>
+                    <!--SelectedItem with focus-->
+                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="LemonChiffon" Opacity=".4"/>
+                    <!--SelectedItem without focus-->
+                    <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="Transparent" Opacity=".4"/>
+                </Style.Resources>
+            </Style>
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
@@ -48,12 +78,7 @@
                 </StackPanel>
             </Button>
         </StackPanel>
-        <ListBox Grid.Row="1" ItemsSource="{Binding Repositories}" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch">
-            <ListBox.ItemContainerStyle>
-                <Style TargetType="ListBoxItem">
-                    <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
-                </Style>
-            </ListBox.ItemContainerStyle>
+        <ListBox Grid.Row="1" ItemsSource="{Binding Repositories.View}" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Border BorderBrush="LightBlue" BorderThickness="1" Background="White" HorizontalAlignment="Stretch">
