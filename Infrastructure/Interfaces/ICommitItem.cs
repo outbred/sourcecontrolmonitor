@@ -6,6 +6,7 @@ namespace Infrastructure.Interfaces
 {
 	public interface ICommitItem
 	{
+		string RepositoryName { get; set; }
 		string Author { get; set; }
 		DateTime Date { get; set; }
 		string LogMessage { get; set; }

@@ -23,11 +23,13 @@ namespace DataServices
 	{
 		private readonly IMediatorService _mediator = null;
 		private readonly IFileDiffService _diffService = null;
+		private readonly IMessageBoxService _messageBoxService = null;
 
 		public SubversionDataService()
 		{
 			_mediator = MediatorLocator.GetSharedMediator();
 			_diffService = DiffServiceLocator.GetPriorityService();
+			_messageBoxService = MessageBoxLocator.GetSharedService();
 		}
 
 		public override void GetLogAsync(Repository repo, Action<ReadOnlyObservableCollection<ICommitItem>> onComplete, int limit = 30, long? startRevision = null, long? endRevision = null)
@@ -40,7 +42,7 @@ namespace DataServices
 				}
 				catch(Exception ex)
 				{
-					MessageBoxLocator.GetSharedService().ShowError(string.Format("Unable to get the log from '{0}'.\n\n{1}", repo.Path, ex.Message), "Error Downloading Log");
+					_messageBoxService.ShowError(string.Format("Unable to get the log from '{0}'.\n\n{1}", repo.Path, ex.Message), "Error Downloading Log");
 					onComplete(null);
 				}
 			});
@@ -48,7 +50,7 @@ namespace DataServices
 			task.Wait(new TimeSpan(0, 0, 0, repo.SecondsToTimeoutDownload));
 			if(task.Status != TaskStatus.RanToCompletion)
 			{
-				MessageBoxLocator.GetSharedService().ShowError(string.Format("Unable to get the log from '{0}'.", repo.Path), "Error Downloading Log");
+				_messageBoxService.ShowError(string.Format("Unable to get the log from '{0}'.", repo.Path), "Error Downloading Log");
 				onComplete(null);
 			}
 		}
@@ -68,7 +70,7 @@ namespace DataServices
 			// not reliable...unfortunately
 			if(!AddressIsAccessible(repo))
 			{
-				MessageBoxLocator.GetSharedService().ShowError(string.Format("Unable to connect to '{0}'.", repo.Path.ToString()));
+				_messageBoxService.ShowError(string.Format("Unable to connect to '{0}'.", repo.Path.ToString()));
 				return null;
 			}
 
@@ -88,7 +90,7 @@ namespace DataServices
 				{
 					var rootIndex = repo.Path.ToString().IndexOf("svn/");
 					var root = repo.Path.ToString().EndsWith("svn/") ? repo.Path.ToString() : repo.Path.ToString().Remove(rootIndex + 4);
-					allItems.AddRange(logItems.ToCommitItems(new Uri(root), _mediator, repo.SecondsToTimeoutDownload, OnViewChangeDetails));
+					allItems.AddRange(logItems.ToCommitItems(new Uri(root), _mediator, repo.SecondsToTimeoutDownload, OnViewChangeDetails, repo.Name));
 				}
 				return new ReadOnlyObservableCollection<ICommitItem>(new ObservableCollection<ICommitItem>(allItems));
 			}
@@ -116,14 +118,15 @@ namespace DataServices
 								latest.Seek(0, SeekOrigin.Begin);
 								previous.Seek(0, SeekOrigin.Begin);
 
-								string latFileOnDisk = Path.Combine(ApplicationSettings.Instance.DiffDirectory, latestRevision.Revision.ToString() + ".txt");
+								var ext = Path.HasExtension(p.Path) ? Path.GetExtension(p.Path) : ".txt";
+								string latFileOnDisk = Path.Combine(ApplicationSettings.Instance.DiffDirectory, string.Format("{0}_{1}.{2}", Path.GetFileNameWithoutExtension(p.Path), latestRevision.Revision, ext));
 								using(var latestFile = File.OpenWrite(latFileOnDisk))
 								{
 									latest.WriteTo(latestFile);
 									latestFile.Flush();
 								}
 
-								string prevFileOnDisk = Path.Combine(ApplicationSettings.Instance.DiffDirectory, (latestRevision.Revision - 1).ToString(CultureInfo.InvariantCulture) + ".txt");
+								string prevFileOnDisk = Path.Combine(ApplicationSettings.Instance.DiffDirectory, string.Format("{0}_{1}.{2}", Path.GetFileNameWithoutExtension(p.Path), (latestRevision.Revision - 1), ext));
 								using(var previousFile = File.OpenWrite(prevFileOnDisk))
 								{
 									previous.WriteTo(previousFile);
@@ -155,7 +158,7 @@ namespace DataServices
 				task.Wait(new TimeSpan(0, 0, 0, secondsToTimeout));
 				if(task.Status != TaskStatus.RanToCompletion)
 				{
-					MessageBoxLocator.GetSharedService().ShowError("Unable to download change details.  Dash it all!");
+					_messageBoxService.ShowError("Unable to download change details.  Dash it all!");
 					_mediator.NotifyColleaguesAsync<EndBusyEvent>(null);
 				}
 			});

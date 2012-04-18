@@ -20,7 +20,7 @@ namespace DataServices
 	public static class SvnDataServiceExtensions
 	{
 		public static List<ICommitItem> ToCommitItems(this Collection<SvnLogEventArgs> list, Uri repoPath, IMediatorService mediator, int secondsToTimeout,
-			Action<SvnRevision, Uri, SvnChangeItem, int> onViewChangeDetails)
+			Action<SvnRevision, Uri, SvnChangeItem, int> onViewChangeDetails, string repoName)
 		{
 			var result = new List<ICommitItem>();
 			list.ToList().ForEach(i =>
@@ -32,7 +32,8 @@ namespace DataServices
 					LogMessage = i.LogMessage,
 					Revision = i.Revision,
 					ItemChanges = i.ChangedPaths != null ? i.ChangedPaths.ToItemsChanged(i.Revision, repoPath, mediator, secondsToTimeout, onViewChangeDetails) : null,
-					RepoPath = repoPath
+					RepoPath = repoPath,
+					RepositoryName = repoName
 				};
 				result.Add(svnItem);
 			});

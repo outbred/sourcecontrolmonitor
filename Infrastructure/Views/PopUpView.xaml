@@ -9,7 +9,6 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
         <ResourceDictionary>
-            <Helpers:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
             <Storyboard x:Key="PopUpOpen">
                 <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)" Storyboard.TargetName="PopUpControl">
                     <EasingColorKeyFrame KeyTime="0" Value="#00000000"/>

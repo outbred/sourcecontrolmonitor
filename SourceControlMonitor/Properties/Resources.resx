@@ -124,6 +124,9 @@
   <data name="Actions_svn_update_icon_64" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Actions-svn-update-icon_64.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Close" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Close.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="svn48" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\svn48.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>

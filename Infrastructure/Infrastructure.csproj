@@ -100,9 +100,12 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommandBehavior\BehaviorBinding.cs" />
     <Compile Include="CommandBehavior\CommandBehavior.cs" />
     <Compile Include="CommandBehavior\CommandBehaviorBinding.cs" />
+    <Compile Include="CommandBehavior\CommandBehaviorCollection.cs" />
     <Compile Include="CommandBehavior\EventHandlerGenerator.cs" />
+    <Compile Include="CommandBehavior\ExecutionStrategy.cs" />
     <Compile Include="CommandBehavior\SimpleCommand.cs" />
     <Compile Include="Events.cs" />
     <Compile Include="Interfaces\IPopUpView.cs" />
@@ -158,7 +161,7 @@
     <Compile Include="Utilities\UiDispatcherLocator.cs" />
     <Compile Include="Services\UiDispatcherService.cs" />
     <Compile Include="Utilities\ViewLocator.cs" />
-    <Compile Include="Utilities\ViewModelBase.cs" />
+    <Compile Include="Utilities\ObservableBase.cs" />
     <Compile Include="Utilities\ViewModelLocator.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

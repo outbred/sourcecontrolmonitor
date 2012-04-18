@@ -9,7 +9,7 @@ using Xceed.Wpf.Toolkit;
 
 namespace SourceControlMonitor.ViewModels
 {
-	public class ShellViewModel : ViewModelBase, IShellViewModel
+	public class ShellViewModel : ObservableBase, IShellViewModel
 	{
 		public ShellViewModel()
 		{

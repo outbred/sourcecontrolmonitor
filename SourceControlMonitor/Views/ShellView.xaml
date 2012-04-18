@@ -6,7 +6,8 @@
                 Background="{DynamicResource WindowBackgroundBrush}"
                 xmlns:transt="clr-namespace:Transitionals.Transitions;assembly=Transitionals"
                 xmlns:local="clr-namespace:SourceControlMonitor.Views"
-                xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit" 
+                xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+                xmlns:tb="clr-namespace:Hardcodet.Wpf.TaskbarNotification;assembly=Hardcodet.Wpf.TaskbarNotification"
                 Title="Source Control Monitor"
                 WindowStartupLocation="CenterScreen"
                 Height="550" 
@@ -30,6 +31,13 @@
             <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
+        <tb:TaskbarIcon x:Name="notifyIcon" IconSource="../Resources/SourceControlMonitor.ico" 
+                        Visibility="Collapsed"
+                        TrayBalloonTipClicked="OnDoubleClick"
+                        LeftClickCommand="{Binding OnClick}" 
+                        DoubleClickCommand="{Binding OnDoubleClick}"
+                        TrayMouseDoubleClick="OnDoubleClick"
+                        ToolTipText="MVVM Source Control Monitor" />
         <ContentControl Grid.Row="0" Grid.ColumnSpan="2" Content="{Binding MenuView}" />
         <Expander ExpandDirection="Left" Grid.Row="1" IsExpanded="True" Header="Repositories">
             <Expander.Content>

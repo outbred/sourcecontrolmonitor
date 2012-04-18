@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
@@ -13,7 +14,7 @@ using Infrastructure.Settings;
 namespace Infrastructure.Models
 {
 	[DataContract]
-	public class Repository : ViewModelBase, IDataErrorInfo
+	public class Repository : ObservableBase, IDataErrorInfo
 	{
 		private string _name;
 		private RepositoryType _type;
@@ -23,20 +24,35 @@ namespace Infrastructure.Models
 		private object _locker = null;
 		private bool _alreadyUpdating;
 
+		public bool BlockUpdates { get; set; }
+
 		public void Initialize()
 		{
-			_items = new ObservableCollectionEx<ICommitItem>();
-			_locker = new object();
-			UiDispatcherService.Invoke(() =>
-			{
-				CommitItems = CollectionViewSource.GetDefaultView(_items);
-				var listCollectionView = CommitItems as ListCollectionView;
-				if(listCollectionView != null)
-				{
-					listCollectionView.CustomSort = new CommitItemSorter() { Direction = ListSortDirection.Descending };
-				}
-			});
+			BlockUpdates = false;
 
+			if(CommitItems == null)
+			{
+				_items = new ObservableCollectionEx<ICommitItem>();
+				_locker = new object();
+
+				// Apparently, not only must CommitItems be set on the UI thread, but the ICollectionView object
+				// must also be created on it!
+				UiDispatcherService.Invoke(() =>
+				{
+					CommitItems = CollectionViewSource.GetDefaultView(_items);
+					var listCollectionView = CommitItems as ListCollectionView;
+					if(listCollectionView != null)
+					{
+						listCollectionView.CustomSort = new CommitItemSorter() { Direction = ListSortDirection.Descending };
+					}
+				});
+			}
+
+			if(_historyChecker != null)
+			{
+				_historyChecker.Stop();
+				_historyChecker = null;
+			}
 
 			_dataService = (from d in DataServiceLocator.GetSharedServices()
 							where this.Type == d.RepositoryType
@@ -52,6 +68,11 @@ namespace Infrastructure.Models
 
 		public void RefreshCommitHistory()
 		{
+			if(BlockUpdates)
+			{
+				return;
+			}
+
 			long? startRevision = this._items.OrderByDescending(item => item.Revision).Select(item => item.Revision).FirstOrDefault();
 
 			if(!_alreadyUpdating && _dataService != null)
@@ -68,7 +89,7 @@ namespace Infrastructure.Models
 					{
 						UiDispatcherService.InvokeAsync(() =>
 						{
-							this._items.MergeAdd(items,
+							var added = this._items.MergeAdd(items,
 								(item, collection) => collection.FirstOrDefault(c => c.Revision == item.Revision),
 								(itemOld, itemNew) =>
 								{
@@ -79,8 +100,13 @@ namespace Infrastructure.Models
 									itemOld.LogMessage = itemOld.LogMessage;
 									itemOld.ItemChanges = itemNew.ItemChanges;
 								});
+							var list = new List<ICommitItem>();
+							if(added != null)
+							{
+								list.AddRange(added);
+							}
 
-							this._items.Count();
+							Mediator.NotifyColleaguesAsync<CommitsPublishedEvent>(list);
 						});
 					}
 

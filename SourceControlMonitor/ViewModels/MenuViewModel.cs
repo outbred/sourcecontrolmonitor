@@ -8,7 +8,7 @@ using SourceControlMonitor.Interfaces;
 
 namespace SourceControlMonitor.ViewModels
 {
-	public class MenuViewModel : ViewModelBase, IMenuViewModel
+	public class MenuViewModel : ObservableBase, IMenuViewModel
 	{
 		public MenuViewModel()
 		{

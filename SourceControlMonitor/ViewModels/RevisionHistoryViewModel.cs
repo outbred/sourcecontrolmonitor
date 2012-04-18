@@ -19,7 +19,7 @@ using System.Threading;
 
 namespace SourceControlMonitor.ViewModels
 {
-	public class RevisionHistoryViewModel : ViewModelBase, IRevisionHistoryViewModel
+	public class RevisionHistoryViewModel : ObservableBase, IRevisionHistoryViewModel
 	{
 		private ObservableCollectionEx<ICommitItem> _commitItems = new ObservableCollectionEx<ICommitItem>();
 

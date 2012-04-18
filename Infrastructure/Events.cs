@@ -15,4 +15,11 @@ namespace Infrastructure
 	public class AddRepositoryEvent { }
 	public class RefreshRepositoryHistoriesEvent { }
 	public class RepositorySelectedEvent { }
+	public class CommitsPublishedEvent { }
+	public class ApplicationHiddenEvent { }
+	public class ApplicationRestoredEvent { }
+	/// <summary>
+	/// Used just by the NotifyBalloonViewModel...for now
+	/// </summary>
+	public class ShowApplicationEvent { }
 }

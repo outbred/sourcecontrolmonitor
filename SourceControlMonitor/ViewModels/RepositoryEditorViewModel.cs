@@ -10,7 +10,7 @@ using Infrastructure.Settings;
 
 namespace SourceControlMonitor.ViewModels
 {
-	public class RepositoryEditorViewModel : ViewModelBase, IRepositoryEditorViewModel
+	public class RepositoryEditorViewModel : ObservableBase, IRepositoryEditorViewModel
 	{
 		private Repository _repoBeforeEdit = null;
 		private bool _isNewRepo = false;
@@ -22,14 +22,19 @@ namespace SourceControlMonitor.ViewModels
 				AcceptText = "Commit";
 				Repository = repo as Repository;
 				_isNewRepo = false;
+				if(Repository != null)
+				{
+					Repository.BlockUpdates = true;
+				}
+
 				_repoBeforeEdit = Repository != null ? new Repository()
-									{
-										Password = Repository.Password,
-										Name = Repository.Name,
-										Path = Repository.Path,
-										Type = Repository.Type,
-										UserName = Repository.UserName
-									} : null;
+				{
+					Password = Repository.Password,
+					Name = Repository.Name,
+					Path = Repository.Path,
+					Type = Repository.Type,
+					UserName = Repository.UserName
+				} : null;
 			});
 
 			Mediator.Subscribe<AddRepositoryEvent>(repo =>
@@ -72,7 +77,9 @@ namespace SourceControlMonitor.ViewModels
 					{
 						ApplicationSettings.Instance.Repositories.Add(Repository);
 					}
+					Repository.Initialize();
 					ApplicationSettings.Save();
+
 					Mediator.NotifyColleaguesAsync<RefreshRepositoryHistoriesEvent>(null);
 					Mediator.NotifyColleaguesAsync<HideChildWindowEvent>(null);
 				});

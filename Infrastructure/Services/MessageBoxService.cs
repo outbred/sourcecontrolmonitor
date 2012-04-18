@@ -6,15 +6,21 @@ namespace Infrastructure.Services
 {
 	public class MessageBoxService : IMessageBoxService
 	{
-		private static readonly IUiDispatcherService _uiDispatcherService = null;
-		static MessageBoxService()
+		private readonly IUiDispatcherService _uiDispatcherService = null;
+		private readonly IMediatorService _mediator = null;
+		private bool _applicationHidden = false;
+
+		public MessageBoxService()
 		{
 			_uiDispatcherService = Container.GetSharedInstance<IUiDispatcherService>();
+			_mediator = MediatorLocator.GetSharedMediator();
+			_mediator.Subscribe<ApplicationHiddenEvent>(ignore => _applicationHidden = true);
+			_mediator.Subscribe<ApplicationRestoredEvent>(ignore => _applicationHidden = false);
 		}
 
 		public void ShowError(string message, string caption = null)
 		{
-			if(_uiDispatcherService != null)
+			if(_uiDispatcherService != null && !_applicationHidden)
 			{
 				_uiDispatcherService.Invoke(() =>
 				{
@@ -33,7 +39,7 @@ namespace Infrastructure.Services
 
 		public void ShowInfo(string message, string caption = null)
 		{
-			if(_uiDispatcherService != null)
+			if(_uiDispatcherService != null && !_applicationHidden)
 			{
 				_uiDispatcherService.Invoke(() =>
 				{
@@ -58,7 +64,7 @@ namespace Infrastructure.Services
 		/// <returns>Null if unable to show dialog; true if 'Ok'</returns>
 		public bool? ShowOkCancel(string message, string caption = null)
 		{
-			if(_uiDispatcherService != null)
+			if(_uiDispatcherService != null && !_applicationHidden)
 			{
 				var result = MessageBoxResult.Cancel;
 				_uiDispatcherService.Invoke(() =>
@@ -86,7 +92,7 @@ namespace Infrastructure.Services
 		/// <returns>Null if unable to show dialog; true if 'Yes'</returns>
 		public bool? ShowYesNo(string message, string caption = null)
 		{
-			if(_uiDispatcherService != null)
+			if(_uiDispatcherService != null && !_applicationHidden)
 			{
 				var result = MessageBoxResult.Cancel;
 				_uiDispatcherService.Invoke(() =>

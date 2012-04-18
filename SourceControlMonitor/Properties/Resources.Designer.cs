@@ -74,6 +74,13 @@ namespace SourceControlMonitor.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap Close {
+            get {
+                object obj = ResourceManager.GetObject("Close", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap svn48 {
             get {
                 object obj = ResourceManager.GetObject("svn48", resourceCulture);

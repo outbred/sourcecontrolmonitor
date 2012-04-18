@@ -21,14 +21,6 @@ namespace AttachedCommandBehavior
 		/// </summary>
 		public DependencyObject Owner { get; private set; }
 		/// <summary>
-		/// The command to execute when the specified event is raised
-		/// </summary>
-		public ICommand Command { get; set; }
-		/// <summary>
-		/// Gets or sets a CommandParameter
-		/// </summary>
-		public object CommandParameter { get; set; }
-		/// <summary>
 		/// The event name to hook up to
 		/// This property can only be set from the BindEvent Method
 		/// </summary>
@@ -41,6 +33,46 @@ namespace AttachedCommandBehavior
 		/// Gets the EventHandler for the binding with the event
 		/// </summary>
 		public Delegate EventHandler { get; private set; }
+
+		#region Execution
+		//stores the strategy of how to execute the event handler
+		IExecutionStrategy strategy;
+
+		/// <summary>
+		/// Gets or sets a CommandParameter
+		/// </summary>
+		public object CommandParameter { get; set; }
+
+		ICommand command;
+		/// <summary>
+		/// The command to execute when the specified event is raised
+		/// </summary>
+		public ICommand Command
+		{
+			get { return command; }
+			set
+			{
+				command = value;
+				//set the execution strategy to execute the command
+				strategy = new CommandExecutionStrategy { Behavior = this };
+			}
+		}
+
+		Action<object> action;
+		/// <summary>
+		/// Gets or sets the Action
+		/// </summary>
+		public Action<object> Action
+		{
+			get { return action; }
+			set
+			{
+				action = value;
+				// set the execution strategy to execute the action
+				strategy = new ActionExecutionStrategy { Behavior = this };
+			}
+		}
+		#endregion
 
 		#endregion
 
@@ -60,19 +92,19 @@ namespace AttachedCommandBehavior
 
 			//Create an event handler for the event that will call the ExecuteCommand method
 			EventHandler = EventHandlerGenerator.CreateDelegate(
-				Event.EventHandlerType, typeof(CommandBehaviorBinding).GetMethod("ExecuteCommand", BindingFlags.Public | BindingFlags.Instance), this);
+				Event.EventHandlerType, typeof(CommandBehaviorBinding).GetMethod("Execute", BindingFlags.Public | BindingFlags.Instance), this);
 			//Register the handler to the Event
 			Event.AddEventHandler(Owner, EventHandler);
 		}
 
 		/// <summary>
-		/// Executes the command
+		/// Executes the strategy
 		/// </summary>
-		public void ExecuteCommand()
+		public void Execute()
 		{
-			if(Command != null && Command.CanExecute(CommandParameter))
+			if(strategy != null)
 			{
-				Command.Execute(CommandParameter);
+				strategy.Execute(CommandParameter);
 			}
 		}
 

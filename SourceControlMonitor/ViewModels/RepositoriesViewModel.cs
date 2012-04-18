@@ -12,7 +12,7 @@ using Infrastructure;
 
 namespace SourceControlMonitor.ViewModels
 {
-	public class RepositoriesViewModel : ViewModelBase, IRepositoriesViewModel
+	public class RepositoriesViewModel : ObservableBase, IRepositoriesViewModel
 	{
 		public RepositoriesViewModel()
 		{

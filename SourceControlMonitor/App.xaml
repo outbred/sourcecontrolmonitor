@@ -3,7 +3,8 @@
              xmlns:SampleData="clr-namespace:Expression.Blend.SampleData.RevisionHistoryViewModelSampleDataSource" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:Convertors="clr-namespace:SourceControlMonitor.Convertors" mc:Ignorable="d"
+             xmlns:Convertors="clr-namespace:SourceControlMonitor.Convertors"
+             xmlns:Helpers="clr-namespace:Infrastructure.Convertors;assembly=Infrastructure" mc:Ignorable="d"
              x:Class="SourceControlMonitor.App"
              StartupUri="Views\ShellView.xaml">
 	<Application.Resources>
@@ -44,6 +45,7 @@
                 </ResourceDictionary>-->
         	</ResourceDictionary.MergedDictionaries>
         	<Convertors:TypeToImageConverter x:Key="TypeToImageConverter" />
+            <Helpers:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

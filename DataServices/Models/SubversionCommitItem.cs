@@ -9,9 +9,20 @@ using SharpSvn;
 
 namespace DataServices.Models
 {
-	public class SubversionCommitItem : ViewModelBase, ICommitItem
+	public class SubversionCommitItem : ObservableBase, ICommitItem
 	{
 		#region Implementation of ICommitItem
+
+		private string _repositoryName;
+		public string RepositoryName
+		{
+			get { return _repositoryName; }
+			set
+			{
+				_repositoryName = value;
+				NotifyPropertyChanged("RepositoryName");
+			}
+		}
 
 		private string _author;
 		public string Author

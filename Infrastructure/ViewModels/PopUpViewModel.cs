@@ -6,7 +6,7 @@ using Infrastructure.Utilities;
 
 namespace Infrastructure.ViewModels
 {
-	public class PopUpViewModel : ViewModelBase, IPopUpViewModel
+	public class PopUpViewModel : ObservableBase, IPopUpViewModel
 	{
 		public PopUpViewModel()
 		{

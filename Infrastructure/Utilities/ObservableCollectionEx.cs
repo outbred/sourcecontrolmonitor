@@ -113,11 +113,12 @@ namespace Infrastructure.Utilities
 		/// <param name="updated">Updated/new items</param>
 		/// <param name="findMatch ">Finds a match in the existing collection given the new item</param>
 		/// <param name="updateItem">Delegate used to update the old item given the new one (if there is one)</param>
-		public void MergeAdd(IEnumerable<T> updated, Func<T, IEnumerable<T>, T> findMatch = null, Action<T, T> updateItem = null)
+		/// <returns>Items that were added</returns>
+		public IEnumerable<T> MergeAdd(IEnumerable<T> updated, Func<T, IEnumerable<T>, T> findMatch = null, Action<T, T> updateItem = null)
 		{
 			if(updated == null)
 			{
-				return;
+				return null;
 			}
 
 			this.SuspendCollectionChangeNotification();
@@ -125,6 +126,7 @@ namespace Infrastructure.Utilities
 			if(this.Count == 0)
 			{
 				AddRange(updated);
+				return updated;
 			}
 			else if(findMatch == null || updateItem == null)
 			{
@@ -134,6 +136,7 @@ namespace Infrastructure.Utilities
 							 select c).ToList();
 
 				this.AddRange(toAdd);
+				return toAdd;
 			}
 			else
 			{
@@ -153,6 +156,7 @@ namespace Infrastructure.Utilities
 							 select pair.Value).ToList();
 
 				this.AddRange(toAdd);
+				return toAdd;
 			}
 		}
 
