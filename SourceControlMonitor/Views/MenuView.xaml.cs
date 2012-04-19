@@ -12,6 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Infrastructure.Utilities;
+using Shell.Tablet.Views;
 using SourceControlMonitor.Interfaces;
 
 namespace SourceControlMonitor.Views
@@ -25,6 +26,12 @@ namespace SourceControlMonitor.Views
 		{
 			InitializeComponent();
 			this.DataContext = ViewModelLocator.GetSharedViewModel<IMenuViewModel>();
+		}
+
+		private void OnAboutClick(object sender, RoutedEventArgs e)
+		{
+			var about = new AboutBox();
+			about.ShowDialog();
 		}
 	}
 }

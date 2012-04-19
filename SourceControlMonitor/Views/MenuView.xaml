@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:r="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary" mc:Ignorable="d" 
+             xmlns:r="clr-namespace:Fluent;assembly=Fluent" mc:Ignorable="d" 
              d:DesignHeight="150" d:DesignWidth="800">
     <Grid>
         <r:Ribbon>
@@ -14,23 +14,29 @@
                     <r:RibbonButton Command="{Binding OnEditRepositoryClick}" KeyTip="D" ToolTip="Delete Repository" Label="Edit" />
                 </r:RibbonGroup>
             </r:RibbonTab>-->
-            <r:RibbonTab Header="Commits" KeyTip="C">
-                <r:RibbonGroup Header="Actions">
-                    <r:RibbonButton LargeImageSource="..\Resources\Actions-svn-update-icon_64.png" SmallImageSource="..\Resources\Actions-svn-update-icon_32.png"
-                                    Command="{Binding OnCheckCommitsClick}" KeyTip="C" ToolTip="Check for Commits Now" Label="Check" />
-                </r:RibbonGroup>
-            </r:RibbonTab>
-            <r:RibbonTab Header="Options" KeyTip="O" >
+            <r:RibbonTabItem Header="" r:KeyTip.Keys="H">
+                <r:RibbonGroupBox Header="">
+                    <r:Button r:KeyTip.Keys="C" LargeIcon="..\Resources\Actions-svn-update-icon_32.png" Icon="..\Resources\Actions-svn-update-icon_32.png"
+                                    Command="{Binding OnCheckCommitsClick}" ToolTip="Check for Commits Now" Header="Check" />
+                </r:RibbonGroupBox>
+                <r:RibbonGroupBox Header="">
+                    <r:Button Click="OnAboutClick" r:KeyTip.Keys="B" Header="About" LargeIcon="..\Resources\question_32.png" Icon="..\Resources\question_32.png" 
+                              ToolTip="Show info about this here app" />
+                </r:RibbonGroupBox>
+            </r:RibbonTabItem>
+            <!--<r:RibbonTab Header="Options" KeyTip="O" >
                 <r:RibbonGroup Header="Application">
                     <r:RibbonButton Command="{Binding OnAppOptionsClick}" KeyTip="a" Label="Application Options" ToolTip="Edit Application Options" />
                 </r:RibbonGroup>
                 <r:RibbonGroup Header="Version Control Systems">
                     <r:RibbonButton Command="{Binding OnSvnOptionsClick}" KeyTip="s" Label="Subversion Options" ToolTip="Edit SVN Options" />
                 </r:RibbonGroup>
-            </r:RibbonTab>
-            <r:RibbonTab Header="About">
-                <r:RibbonButton Command="{Binding OnAboutClick}" Label="About" />
-            </r:RibbonTab>
+            </r:RibbonTab>-->
+            <!--<r:RibbonTabItem Header="About" r:KeyTip.Keys="A">
+                <r:RibbonGroupBox Header="">
+                    <r:Button Click="OnAboutClick" r:KeyTip.Keys="B" Header="About" />
+                </r:RibbonGroupBox>
+            </r:RibbonTabItem>-->
         </r:Ribbon>
         
     </Grid>

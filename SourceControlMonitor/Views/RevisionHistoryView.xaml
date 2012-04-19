@@ -24,7 +24,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <TextBlock HorizontalAlignment="Right" Text="{Binding CurrentRepository.Status}" FontWeight="Bold" Foreground="DarkBlue" Margin="0,0,30,0" />
+        <TextBlock HorizontalAlignment="Right" Text="{Binding CurrentRepository.Status}" FontWeight="Bold" Margin="0,0,30,0" />
         <DataGrid Grid.Row="1" ItemsSource="{Binding CurrentRepository.CommitItems}" IsReadOnly="True" AutoGenerateColumns="False" RowDetailsVisibilityMode="VisibleWhenSelected" VerticalGridLinesBrush="Transparent">
         	<DataGrid.AlternatingRowBackground>
         		<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">

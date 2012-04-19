@@ -2,6 +2,8 @@
 [Bb]in/
 [Oo]bj/
 packages/
+3rd Party/
+Images/
 
 # mstest test results
 TestResults
