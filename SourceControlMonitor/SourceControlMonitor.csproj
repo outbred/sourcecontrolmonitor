@@ -139,17 +139,17 @@
       <DependentUpon>RevisionHistoryViewModelSampleDataSource.xaml</DependentUpon>
     </Compile>
     <Compile Include="Interfaces\IRepositoryEditorViewModel.cs" />
-    <Compile Include="Themes\ViewModels\MenuViewModel.cs" />
-    <Compile Include="Themes\ViewModels\NotifyBalloonViewModel.cs" />
-    <Compile Include="Themes\ViewModels\RepositoriesViewModel.cs" />
-    <Compile Include="Themes\ViewModels\RepositoryEditorViewModel.cs" />
-    <Compile Include="Themes\ViewModels\RevisionHistoryViewModel.cs" />
-    <Compile Include="Themes\ViewModels\ShellViewModel.cs" />
+    <Compile Include="ViewModels\MenuViewModel.cs" />
+    <Compile Include="ViewModels\NotifyBalloonViewModel.cs" />
+    <Compile Include="ViewModels\RepositoriesViewModel.cs" />
+    <Compile Include="ViewModels\RepositoryEditorViewModel.cs" />
+    <Compile Include="ViewModels\RevisionHistoryViewModel.cs" />
+    <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="Interfaces\IRepositoriesViewModel.cs" />
     <Compile Include="Interfaces\IRepositoriesView.cs" />
     <Compile Include="Interfaces\IRevisionHistoryViewModel.cs" />
     <Compile Include="Interfaces\IRepositoryEditorView.cs" />
-    <Compile Include="Themes\ViewModels\TaskBarIconViewModel.cs" />
+    <Compile Include="ViewModels\TaskBarIconViewModel.cs" />
     <Compile Include="Views\AboutBox.xaml.cs">
       <DependentUpon>AboutBox.xaml</DependentUpon>
     </Compile>
