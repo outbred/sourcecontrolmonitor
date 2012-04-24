@@ -11,7 +11,7 @@ namespace Infrastructure.Utilities
 
 	public interface IFileDiffService
 	{
-		Process ShowDiffs(string fileNameRight, string fileNameLeft);
+		Process ShowDiff(string fileNameRight, string fileNameLeft);
 		bool IsSupported { get; }
 		DiffServicePriority Priority { get; }
 	}

@@ -23,7 +23,7 @@ namespace Infrastructure.Services
 
 		#region Implementation of IFileDiffService
 
-		public Process ShowDiffs(string fileNameRight, string fileNameLeft)
+		public Process ShowDiff(string fileNameRight, string fileNameLeft)
 		{
 			if(!File.Exists(fileNameLeft) || !File.Exists(fileNameRight) || !File.Exists(_beyondCompare))
 			{

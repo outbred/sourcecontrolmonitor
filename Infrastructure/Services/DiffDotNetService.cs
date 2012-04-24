@@ -11,7 +11,7 @@ namespace Infrastructure.Utilities
 	public class DiffDotNetService : IFileDiffService
 	{
 		private static readonly string DiffDotNet = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "DiffDotNet.exe");
-		public Process ShowDiffs(string fileNameRight, string fileNameLeft)
+		public Process ShowDiff(string fileNameRight, string fileNameLeft)
 		{
 			if(!File.Exists(fileNameLeft) || !File.Exists(fileNameRight) || !File.Exists(DiffDotNet))
 			{

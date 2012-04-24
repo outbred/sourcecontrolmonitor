@@ -38,6 +38,5 @@
                 </r:RibbonGroupBox>
             </r:RibbonTabItem>-->
         </r:Ribbon>
-        
     </Grid>
 </UserControl>

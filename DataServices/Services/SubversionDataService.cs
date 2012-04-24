@@ -138,7 +138,7 @@ namespace DataServices
 								// background this so that our callbacks are not waiting on this complete (unnecessary)
 								Task.Factory.StartNew(() =>
 								{
-									var process = _diffService.ShowDiffs(prevFileOnDisk, latFileOnDisk);
+									var process = _diffService.ShowDiff(prevFileOnDisk, latFileOnDisk);
 
 									if(process != null)
 									{
@@ -158,7 +158,7 @@ namespace DataServices
 				task.Wait(new TimeSpan(0, 0, 0, secondsToTimeout));
 				if(task.Status != TaskStatus.RanToCompletion)
 				{
-					_messageBoxService.ShowError("Unable to download change details.  Dash it all!");
+					_messageBoxService.ShowError("Diff download timed out. Please increase the timeout if you continue to receive this error.");
 					_mediator.NotifyColleaguesAsync<EndBusyEvent>(null);
 				}
 			});
