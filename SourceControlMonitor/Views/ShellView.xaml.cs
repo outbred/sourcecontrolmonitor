@@ -29,48 +29,6 @@ namespace SourceControlMonitor.Views
 			_mediator = MediatorLocator.GetSharedMediator();
 			_mediator.Subscribe<ShowApplicationEvent>(ignore => OnDoubleClick(null, null));
 
-			_mediator.Subscribe<CommitsPublishedEvent>(item =>
-			{
-				Application.Current.Dispatcher.BeginInvoke(new Action(() =>
-				{
-					if(notifyIcon.Visibility != Visibility.Visible)
-					{
-						return;
-					}
-
-					var commits = item as List<ICommitItem>;
-					var commit = item as ICommitItem;
-
-					if(commits != null && commits.Count > 1)
-					{
-						var balloon = new NotifyBalloonView
-						{
-							BalloonText = string.Format("{0}\n{1} new commits", commits[0].RepositoryName, commits.Count),
-							BalloonDetails = string.Join(", ", commits.Select(c => c.Author))
-						};
-
-						notifyIcon.ShowCustomBalloon(balloon, PopupAnimation.Slide, 4000);
-						return;
-					}
-					else if(commits != null && commits.Count == 1)
-					{
-						commit = commits[0];
-					}
-
-					if(commit != null)
-					{
-
-						var balloon = new NotifyBalloonView
-						{
-							BalloonText = string.Format("{0} - {1}", commit.Author, commit.Date),
-							BalloonDetails = commit.LogMessage
-						};
-
-						notifyIcon.ShowCustomBalloon(balloon, PopupAnimation.Slide, 4000);
-					}
-				}));
-			});
-
 			this.StateChanged += (s, e) =>
 			{
 				if(this.WindowState == WindowState.Minimized)

@@ -149,7 +149,7 @@ namespace DataServices
 								});
 							}
 						}
-						catch(Exception ex)
+						catch(Exception)
 						{
 							// log it?
 						}

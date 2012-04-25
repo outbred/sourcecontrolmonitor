@@ -7,7 +7,9 @@
                 xmlns:local="clr-namespace:SourceControlMonitor.Views"
                 xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
                 xmlns:tb="clr-namespace:Hardcodet.Wpf.TaskbarNotification;assembly=Hardcodet.Wpf.TaskbarNotification"
-                xmlns:r="clr-namespace:Fluent;assembly=Fluent" Title="Source Control Monitor"
+                xmlns:r="clr-namespace:Fluent;assembly=Fluent" 
+                xmlns:helpers="clr-namespace:SourceControlMonitor.Helpers"
+                Title="Source Control Monitor"
                 WindowStartupLocation="CenterScreen"
                 Height="550" 
                 Width="1100">
@@ -32,11 +34,12 @@
         </Grid.RowDefinitions>
         <tb:TaskbarIcon x:Name="notifyIcon" 
                         IconSource="../Resources/SourceControlMonitor.ico" 
-                        Visibility="Collapsed"
+                        Visibility="{Binding IsVisible, Converter={StaticResource BoolToVisibilityConverter}, FallbackValue=False}"
                         TrayBalloonTipClicked="OnDoubleClick"
                         LeftClickCommand="{Binding OnClick}" 
                         DoubleClickCommand="{Binding OnDoubleClick}"
                         TrayMouseDoubleClick="OnDoubleClick"
+                        helpers:BalloonHelper.BalloonContext="{Binding BalloonContext}"
                         ToolTipText="MVVM Source Control Monitor">
             <tb:TaskbarIcon.TrayToolTip>
                 <local:NotifyToolTip Background="Transparent" />

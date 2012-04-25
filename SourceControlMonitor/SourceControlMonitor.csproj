@@ -126,6 +126,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Helpers\BalloonHelper.cs" />
     <Compile Include="Interfaces\INotifyBalloonViewModel.cs" />
     <Compile Include="Interfaces\ISourceControlController.cs" />
     <Compile Include="Controllers\SourceControlController.cs" />

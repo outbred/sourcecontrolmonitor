@@ -47,7 +47,7 @@ namespace DataServices
 				return e.Status != WebExceptionStatus.Timeout && e.Status != WebExceptionStatus.NameResolutionFailure && e.Status != WebExceptionStatus.SendFailure
 					&& e.Status != WebExceptionStatus.ConnectFailure && e.Status != WebExceptionStatus.UnknownError;
 			}
-			catch(Exception ex)
+			catch(Exception)
 			{
 				return false;
 			}
