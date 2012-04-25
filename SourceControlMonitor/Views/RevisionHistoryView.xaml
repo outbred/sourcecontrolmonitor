@@ -5,6 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:SampleData="clr-namespace:Expression.Blend.SampleData.RevisionHistoryViewModelSampleDataSource"
              xmlns:local="clr-namespace:AttachedCommandBehavior;assembly=Infrastructure"
+             xmlns:Behaviors="clr-namespace:Infrastructure.Behaviors;assembly=Infrastructure"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              x:Class="SourceControlMonitor.Views.RevisionHistoryView" 
              mc:Ignorable="d"
              d:DesignHeight="550" d:DesignWidth="800">
@@ -25,7 +27,8 @@
             <RowDefinition />
         </Grid.RowDefinitions>
         <TextBlock HorizontalAlignment="Right" Text="{Binding CurrentRepository.Status}" FontWeight="Bold" Margin="0,0,30,0" />
-        <DataGrid Grid.Row="1" ItemsSource="{Binding CurrentRepository.CommitItems}" IsReadOnly="True" AutoGenerateColumns="False" RowDetailsVisibilityMode="VisibleWhenSelected" VerticalGridLinesBrush="Transparent">
+        <DataGrid x:Name="dataGrid" Grid.Row="1" ItemsSource="{Binding CurrentRepository.CommitItems}" IsReadOnly="True" AutoGenerateColumns="False" 
+                  RowDetailsVisibilityMode="VisibleWhenSelected" VerticalGridLinesBrush="Transparent" >
         	<DataGrid.AlternatingRowBackground>
         		<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
         			<GradientStop Color="White"/>
@@ -34,25 +37,26 @@
         	</DataGrid.AlternatingRowBackground>
     		<DataGrid.RowDetailsTemplate>
     			<DataTemplate>
-                    <Grid ScrollViewer.CanContentScroll="False">
-                        <ListBox ItemsSource="{Binding ItemChanges}">
-    						<ListBox.ItemTemplate>
-    							<DataTemplate>
-                                    <Grid local:CommandBehavior.Event="MouseDown" local:CommandBehavior.Command="{Binding OnViewChanges}">
-    									<Grid.ColumnDefinitions>
-    										<ColumnDefinition Width="Auto" />
-    										<ColumnDefinition Width="Auto" />
-    										<ColumnDefinition />
-    									</Grid.ColumnDefinitions>
-                                        <!-- TODO: implement -->
-    									<!--<CheckBox IsHitTestVisible="False" IsChecked="{Binding HasLocalEdits}" />-->
-    									<TextBlock Text="{Binding ChangeType}" Padding="10,0,10,0" Grid.Column="1"/>
-    									<TextBlock Text="{Binding FilePath}" Grid.Column="2" />
-    								</Grid>
-                                </DataTemplate>
-    						</ListBox.ItemTemplate>
-    					</ListBox>
-    				</Grid>
+                    <ListBox ItemsSource="{Binding ItemChanges}">
+    					<ListBox.ItemTemplate>
+    						<DataTemplate>
+                                <Grid local:CommandBehavior.Event="MouseDown" local:CommandBehavior.Command="{Binding OnViewChanges}">
+    								<Grid.ColumnDefinitions>
+    									<ColumnDefinition Width="Auto" />
+    									<ColumnDefinition Width="Auto" />
+    									<ColumnDefinition />
+    								</Grid.ColumnDefinitions>
+                                    <!-- TODO: implement -->
+    								<!--<CheckBox IsHitTestVisible="False" IsChecked="{Binding HasLocalEdits}" />-->
+    								<TextBlock Text="{Binding ChangeType}" Padding="10,0,10,0" Grid.Column="1"/>
+    								<TextBlock Text="{Binding FilePath}" Grid.Column="2" />
+    							</Grid>
+                            </DataTemplate>
+    					</ListBox.ItemTemplate>
+                        <i:Interaction.Behaviors>
+                            <Behaviors:IgnoreMouseWheelBehavior />
+                        </i:Interaction.Behaviors>
+                    </ListBox>
     			</DataTemplate>
     		</DataGrid.RowDetailsTemplate>
     		<DataGrid.Columns>

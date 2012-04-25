@@ -34,7 +34,7 @@
         </Grid.RowDefinitions>
         <tb:TaskbarIcon x:Name="notifyIcon" 
                         IconSource="../Resources/SourceControlMonitor.ico" 
-                        Visibility="{Binding IsVisible, Converter={StaticResource BoolToVisibilityConverter}, FallbackValue=False}"
+                        Visibility="Collapsed"
                         TrayBalloonTipClicked="OnDoubleClick"
                         LeftClickCommand="{Binding OnClick}" 
                         DoubleClickCommand="{Binding OnDoubleClick}"
