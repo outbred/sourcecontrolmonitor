@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
@@ -72,6 +73,8 @@ namespace Infrastructure.Models
 			{
 				return;
 			}
+
+			Debug.WriteLine("Refreshing commit history for {0}", this.Name);
 
 			long? startRevision = this._items.OrderByDescending(item => item.Revision).Select(item => item.Revision).FirstOrDefault();
 
@@ -260,6 +263,14 @@ namespace Infrastructure.Models
 			set
 			{
 				_updateInterval = value;
+
+				if(_historyChecker != null)
+				{
+					_historyChecker.Stop();
+					_historyChecker.Interval = new TimeSpan(0, 0, _updateInterval ?? 3, 0);
+					_historyChecker.Start();
+				}
+
 				NotifyPropertyChanged("UpdateInterval");
 			}
 		}

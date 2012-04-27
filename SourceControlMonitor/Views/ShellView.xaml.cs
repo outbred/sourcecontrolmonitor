@@ -65,5 +65,10 @@ namespace SourceControlMonitor.Views
 				}
 			}));
 		}
+
+		private void OnExitClick(object sender, RoutedEventArgs e)
+		{
+			Application.Current.Shutdown();
+		}
 	}
 }

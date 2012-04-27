@@ -44,6 +44,12 @@
             <tb:TaskbarIcon.TrayToolTip>
                 <local:NotifyToolTip Background="Transparent" />
             </tb:TaskbarIcon.TrayToolTip>
+            <tb:TaskbarIcon.ContextMenu>
+                <ContextMenu Style="{x:Null}">
+                    <MenuItem Style="{x:Null}" Header="Exit" Click="OnExitClick" />
+                    <MenuItem Style="{x:Null}" Header="Show Window" Click="OnDoubleClick" />
+                </ContextMenu>
+            </tb:TaskbarIcon.ContextMenu>
         </tb:TaskbarIcon>
         <ContentControl Grid.Row="0" Grid.ColumnSpan="2" Content="{Binding MenuView}" />
         <Expander ExpandDirection="Left" Grid.Row="1" IsExpanded="True" Header="Repositories">
