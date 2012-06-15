@@ -12,7 +12,8 @@ namespace SourceControlMonitor.Helpers
 	public class BalloonHelper : DependencyObject
 	{
 		/// <summary>
-		/// Description
+		/// Helper to facilitate datacontext bindings across controls between a main view and the balloon view
+		/// Ensures that the balloon only shows when the app is minimized
 		/// </summary>
 		public static readonly DependencyProperty BalloonContextProperty =
 			DependencyProperty.RegisterAttached("BalloonContext",
@@ -78,17 +79,11 @@ namespace SourceControlMonitor.Helpers
 			set { SetValue(BalloonContextProperty, value); }
 		}
 
-		/// <summary>
-		/// Gets the Command property.  
-		/// </summary>
 		public static object GetBalloonContext(DependencyObject d)
 		{
 			return d.GetValue(BalloonContextProperty);
 		}
 
-		/// <summary>
-		/// Sets the Command property. 
-		/// </summary>
 		public static void SetBalloonContext(DependencyObject d, object value)
 		{
 			d.SetValue(BalloonContextProperty, value);

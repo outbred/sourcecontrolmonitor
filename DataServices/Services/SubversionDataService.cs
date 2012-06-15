@@ -16,6 +16,7 @@ using Infrastructure.Utilities;
 using SharpSvn;
 using SharpSvn.Security;
 using Infrastructure.Settings;
+using System.Threading;
 
 namespace DataServices
 {
@@ -34,7 +35,7 @@ namespace DataServices
 
 		public override void GetLogAsync(Repository repo, Action<ReadOnlyObservableCollection<ICommitItem>> onComplete, int limit = 30, long? startRevision = null, long? endRevision = null)
 		{
-			var task = Task.Factory.StartNew(() =>
+			Task.Factory.StartNew(() =>
 			{
 				try
 				{
@@ -47,12 +48,13 @@ namespace DataServices
 				}
 			});
 
-			task.Wait(new TimeSpan(0, 0, 0, repo.SecondsToTimeoutDownload));
-			if(task.Status != TaskStatus.RanToCompletion)
-			{
-				_messageBoxService.ShowError(string.Format("Unable to get the log from '{0}'.", repo.Path), "Error Downloading Log");
-				onComplete(null);
-			}
+			// TODO: either cleanly handle a cancel or just let it go forever...
+			//if(!task.Wait(new TimeSpan(0, 0, 0, repo.SecondsToTimeoutDownload)))
+			//{
+			//    token.Cancel();
+			//    _messageBoxService.ShowError(string.Format("Unable to get the log from '{0}'.", repo.Path), "Error Downloading Log");
+			//    onComplete(null);
+			//}
 		}
 
 		public override Repository.RepositoryType RepositoryType
@@ -102,7 +104,7 @@ namespace DataServices
 			Task.Factory.StartNew(() =>
 			{
 				_mediator.NotifyColleaguesAsync<BeginBusyEvent>("Downloading change details...");
-				var task = Task.Factory.StartNew(() =>
+				Task.Factory.StartNew(() =>
 				{
 					using(var client = new SvnClient())
 					{
@@ -155,12 +157,14 @@ namespace DataServices
 						}
 					}
 				});
-				task.Wait(new TimeSpan(0, 0, 0, secondsToTimeout));
-				if(task.Status != TaskStatus.RanToCompletion)
-				{
-					_messageBoxService.ShowError("Diff download timed out. Please increase the timeout if you continue to receive this error.");
-					_mediator.NotifyColleaguesAsync<EndBusyEvent>(null);
-				}
+
+				// TODO: either cleanly handle a cancel or just let it go forever...
+				//if(!task.Wait(new TimeSpan(0, 0, 0, secondsToTimeout)))
+				//{
+				//    token.Cancel();
+				//    _messageBoxService.ShowError("Diff download timed out. Please increase the timeout if you continue to receive this error.");
+				//    _mediator.NotifyColleaguesAsync<EndBusyEvent>(null);
+				//}
 			});
 		}
 	}

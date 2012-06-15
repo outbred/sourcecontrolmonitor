@@ -13,7 +13,7 @@ using System.Windows;
 [assembly: AssemblyCompany("Brent Bulla")]
 [assembly: AssemblyProduct("Source Control Monitor®")]
 [assembly: AssemblyCopyright("Copyright © Brent Bulla 2012")]
-[assembly: AssemblyTrademark("Source Control Monitor® is a registered trademarks of Brent Bulla")]
+[assembly: AssemblyTrademark("Source Control Monitor® is a registered trademark of Brent Bulla")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
