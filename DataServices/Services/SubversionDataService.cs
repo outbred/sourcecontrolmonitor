@@ -8,6 +8,7 @@ using System.Net;
 using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
+using DataServices.Interfaces;
 using DataServices.Models;
 using Infrastructure;
 using Infrastructure.Interfaces;
@@ -25,12 +26,32 @@ namespace DataServices
 		private readonly IMediatorService _mediator = null;
 		private readonly IFileDiffService _diffService = null;
 		private readonly IMessageBoxService _messageBoxService = null;
+		private readonly IUiDispatcherService _dispatcherService = null;
 
 		public SubversionDataService()
 		{
 			_mediator = MediatorLocator.GetSharedMediator();
 			_diffService = DiffServiceLocator.GetPriorityService();
 			_messageBoxService = MessageBoxLocator.GetSharedService();
+			_dispatcherService = UiDispatcherLocator.GetSharedDispatcher();
+			//Because our event's payloads are not strongly typed, paranoid usage is the only way
+			// For strongly typed payloads - see Prism's EventAggregator
+			// I do want strongly typed payloads, but to have it, I would have had to re-implement
+			// Prism's EventAggregator, which I could do but is beyond the scope of this project
+			_mediator.Subscribe<RepositoryTypeSelectedInEditEvent>(arg =>
+			{
+				Repository.RepositoryType type;
+				if(arg != null && Enum.TryParse(arg.ToString(), out type) && type == Repository.RepositoryType.Svn)
+				{
+					ISvnRepositoryDetailsView detailsView = null;
+					_dispatcherService.InvokeAsync(() =>
+					{
+						detailsView = ViewLocator.GetSharedInstance<ISvnRepositoryDetailsView>();
+						_mediator.NotifyColleaguesAsync<ShowRepositoryDetailsInEditorEvent>(detailsView);
+					});
+				}
+
+			});
 		}
 
 		public override void GetLogAsync(Repository repo, Action<ReadOnlyObservableCollection<ICommitItem>> onComplete, int limit = 30, long? startRevision = null, long? endRevision = null)

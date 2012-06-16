@@ -10,6 +10,8 @@ namespace Infrastructure
 	public class BeginBusyEvent { }
 	public class EndBusyEvent { }
 	public class EditRepositoryEvent { }
+	public class RepositoryTypeSelectedInEditEvent { }
+	public class ShowRepositoryDetailsInEditorEvent { }
 	//public class ShowChildWindowEvent { }
 	public class HideChildWindowEvent { }
 	public class AddRepositoryEvent { }

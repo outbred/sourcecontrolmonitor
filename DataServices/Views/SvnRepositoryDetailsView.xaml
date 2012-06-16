@@ -1,0 +1,74 @@
+﻿<UserControl x:Class="DataServices.Views.SvnRepositoryDetailsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:w="clr-namespace:Infrastructure.Utilities;assembly=Infrastructure" mc:Ignorable="d" 
+             d:DesignHeight="200" d:DesignWidth="300">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.Resources>
+            <Style TargetType="TextBlock">
+                <Setter Property="HorizontalAlignment" Value="Right" />
+                <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="Width" Value="110" />
+            </Style>
+            <Style TargetType="{x:Type TextBox}">
+                <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="Margin" Value="0,2,40,2" />
+                <Setter Property="Validation.ErrorTemplate">
+                    <Setter.Value>
+                        <ControlTemplate>
+                            <DockPanel LastChildFill="true">
+                                <Border Background="DarkRed" DockPanel.Dock="right" Margin="5,0,0,0" Width="20" Height="20" CornerRadius="10"
+                                    ToolTip="{Binding ElementName=customAdorner, Path=AdornedElement.(Validation.Errors)[0].ErrorContent}">
+                                    <TextBlock Text="!" VerticalAlignment="center" HorizontalAlignment="center" FontWeight="Bold" Foreground="white" />
+                                </Border>
+                                <AdornedElementPlaceholder Name="customAdorner" VerticalAlignment="Center" >
+                                    <Border BorderBrush="DarkRed" BorderThickness="1" />
+                                </AdornedElementPlaceholder>
+                            </DockPanel>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+        </Grid.Resources>
+        
+        <TextBlock Grid.Row="1" Text="NickName: " ToolTip="The nickname for the repository (what you will see in the list)"/>
+        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Repository.Name, UpdateSourceTrigger=LostFocus, ValidatesOnDataErrors=True, NotifyOnValidationError=True}" />
+
+        <TextBlock Grid.Row="2" Text="Absolute Url:  " ToolTip="The absolute url of the repository, like 'http://mypersonalsvn/svn'." />
+        <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding Repository.PathString, UpdateSourceTrigger=LostFocus, ValidatesOnDataErrors=True, NotifyOnValidationError=True}" />
+
+        <TextBlock Grid.Row="3" Text="User Name: " ToolTip="Network authentication credentials to access the repository."/>
+        <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding Repository.UserName, UpdateSourceTrigger=LostFocus, ValidatesOnDataErrors=True, NotifyOnValidationError=True}" />
+
+        <TextBlock Grid.Row="4" Text="Password: " ToolTip="Network authentication credentials to access the repository."/>
+        <PasswordBox Grid.Row="4" Grid.Column="1" w:PasswordHelper.Attach="True" 
+                     w:PasswordHelper.Password="{Binding Repository.Password, UpdateSourceTrigger=LostFocus, ValidatesOnDataErrors=True, NotifyOnValidationError=True}" 
+                     />
+
+        <TextBlock Grid.Row="5" Text="Update Timeout (s): " ToolTip="The timeout before we give up downloading the log, etc."/>
+        <TextBox Grid.Row="5" Text="{Binding Repository.SecondsToTimeoutDownload, FallbackValue=15}" Width="50" HorizontalAlignment="Left" Grid.Column="1" />
+
+        <TextBlock Grid.Row="6" Text="Update Interval (m): " ToolTip="Update interval to refresh the log."/>
+        <TextBox Grid.Row="6" Text="{Binding Repository.UpdateInterval, FallbackValue=3}" Width="50" HorizontalAlignment="Left" Grid.Column="1" />
+
+        <TextBlock Grid.Row="7" Text="Suspend Updates: " ToolTip="If checked, updates will not be automatically pulled down."/>
+        <CheckBox Grid.Row="7" IsChecked="{Binding Repository.SuspendUpdates, FallbackValue=False}" VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Column="1" />
+    </Grid>
+</UserControl>

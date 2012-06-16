@@ -112,6 +112,7 @@
     <Compile Include="Interfaces\IPopUpView.cs" />
     <Compile Include="Interfaces\IPopUpViewModel.cs" />
     <Compile Include="Interfaces\IFileDiffService.cs" />
+    <Compile Include="Interfaces\IRepositoryDetailsView.cs" />
     <Compile Include="Services\BeyondCompareDiffService.cs" />
     <Compile Include="Utilities\CommitItemSorter.cs" />
     <Compile Include="Services\DiffDotNetService.cs" />

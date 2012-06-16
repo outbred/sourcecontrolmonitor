@@ -188,7 +188,7 @@ namespace Infrastructure.Models
 			}
 		}
 
-		public enum RepositoryType { Svn, Tfs }
+		public enum RepositoryType { Svn, Tfs, Git }
 
 		[DataMember]
 		public RepositoryType Type
