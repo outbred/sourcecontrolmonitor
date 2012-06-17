@@ -4,13 +4,24 @@ using System.Net;
 using System.Net.Security;
 using Infrastructure.Interfaces;
 using Infrastructure.Models;
+using Infrastructure.Utilities;
 
 namespace DataServices
 {
 	public abstract class BaseDataService : ISourceControlDataService
 	{
+		protected static readonly IMediatorService _mediator = null;
+		protected static readonly IFileDiffService _diffService = null;
+		protected static readonly IMessageBoxService _messageBoxService = null;
+		protected static readonly IUiDispatcherService _dispatcherService = null;
+
 		static BaseDataService()
 		{
+			_mediator = MediatorLocator.GetSharedMediator();
+			_diffService = DiffServiceLocator.GetPriorityService();
+			_messageBoxService = MessageBoxLocator.GetSharedService();
+			_dispatcherService = UiDispatcherLocator.GetSharedDispatcher();
+
 			// handle ssl servers with crappy..umm...unregistered certificates
 			ServicePointManager.ServerCertificateValidationCallback += ((sender, certificate, chain, sslPolicyErrors) => true);
 		}
@@ -20,7 +31,7 @@ namespace DataServices
 		/// </summary>
 		/// <param name="repo"></param>
 		/// <returns></returns>
-		protected bool AddressIsAccessible(Repository repo)
+		protected bool WebAddressIsAccessible(Repository repo)
 		{
 			try
 			{
@@ -55,8 +66,8 @@ namespace DataServices
 
 		#region Implementation of ISourceControlDataService
 
-		public abstract ReadOnlyObservableCollection<ICommitItem> GetLog(Repository repo, int limit = 30, long? startRevision = new long?(), long? endRevision = new long?());
-		public abstract void GetLogAsync(Repository repo, Action<ReadOnlyObservableCollection<ICommitItem>> onComplete, int limit = 30, long? startRevision = new long?(), long? endRevision = new long?());
+		public abstract ReadOnlyObservableCollection<ICommitItem> GetLog(Repository repo, int limit = 30, string startRevision = null, string endRevision = null);
+		public abstract void GetLogAsync(Repository repo, Action<ReadOnlyObservableCollection<ICommitItem>> onComplete, int limit = 30, string startRevision = null, string endRevision = null);
 		public abstract Repository.RepositoryType RepositoryType { get; }
 
 		#endregion

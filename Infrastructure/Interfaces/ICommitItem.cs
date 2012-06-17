@@ -10,7 +10,7 @@ namespace Infrastructure.Interfaces
 		string Author { get; set; }
 		DateTime Date { get; set; }
 		string LogMessage { get; set; }
-		long Revision { get; set; }
+		string Revision { get; set; }
 		bool? HasLocalEditsOnAnyFile { get; set; }
 		ObservableCollectionEx<IItemChanged> ItemChanges { get; set; }
 	}

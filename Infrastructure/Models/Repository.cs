@@ -76,7 +76,7 @@ namespace Infrastructure.Models
 
 			Debug.WriteLine("Refreshing commit history for {0}", this.Name);
 
-			long? startRevision = this._items.OrderByDescending(item => item.Revision).Select(item => item.Revision).FirstOrDefault();
+			var startRevision = this._items.OrderByDescending(item => item.Revision).Select(item => item.Revision).FirstOrDefault();
 
 			if(!_alreadyUpdating && _dataService != null)
 			{

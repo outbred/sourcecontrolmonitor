@@ -56,7 +56,7 @@ namespace Infrastructure.Utilities
 
 		static readonly ConcurrentDictionary<Type, object> AlreadyCreated = new ConcurrentDictionary<Type, object>();
 		/// <summary>
-		/// By reflection, finds the first instance of a particular interface in this assembly, creates it and returns it
+		/// By reflection, finds the first instance of a particular interface in _knownTypes, creates it and returns it
 		/// </summary>
 		/// <typeparam name="TInterface"></typeparam>
 		/// <returns></returns>

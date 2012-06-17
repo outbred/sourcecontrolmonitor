@@ -72,7 +72,7 @@ namespace DataServices.Test
 		[TestMethod()]
 		public void GetLogForAddressesOnAddressOneAdressTest()
 		{
-			var target = new SubversionDataService();
+			var target = new SvnDataService();
 			int limit = 30;
 			var actual = target.GetLog(_testRepo, limit);
 			Assert.IsNotNull(actual);

@@ -17,9 +17,17 @@ namespace SourceControlMonitor.Convertors
 			Infrastructure.Models.Repository.RepositoryType type;
 			if(Enum.TryParse(value.ToString(), out type))
 			{
-				return type == Repository.RepositoryType.Svn
-						? new BitmapImage(new Uri("pack://application:,,,../Resources/svn48.png", UriKind.Absolute))
-						: null;
+				switch(type)
+				{
+					case Repository.RepositoryType.Svn:
+						return new BitmapImage(new Uri("pack://application:,,,../Resources/svn48.png", UriKind.Absolute));
+					case Repository.RepositoryType.Tfs:
+						break;
+					case Repository.RepositoryType.Git:
+						return new BitmapImage(new Uri("pack://application:,,,../Resources/git-logo.png", UriKind.Absolute));
+					default:
+						throw new ArgumentOutOfRangeException();
+				}
 			}
 			return null;
 		}

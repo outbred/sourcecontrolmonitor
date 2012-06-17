@@ -8,8 +8,8 @@ namespace Infrastructure.Interfaces
 {
 	public interface ISourceControlDataService
 	{
-		ReadOnlyObservableCollection<ICommitItem> GetLog(Repository repo, int limit = 30, long? startRevision = null, long? endRevision = null);
-		void GetLogAsync(Repository repo, Action<ReadOnlyObservableCollection<ICommitItem>> onComplete, int limit = 30, long? startRevision = null, long? endRevision = null);
+		ReadOnlyObservableCollection<ICommitItem> GetLog(Repository repo, int limit = 30, string startRevision = null, string endRevision = null);
+		void GetLogAsync(Repository repo, Action<ReadOnlyObservableCollection<ICommitItem>> onComplete, int limit = 30, string startRevision = null, string endRevision = null);
 		Repository.RepositoryType RepositoryType { get; }
 	}
 }

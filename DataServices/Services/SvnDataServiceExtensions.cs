@@ -25,12 +25,12 @@ namespace DataServices
 			var result = new List<ICommitItem>();
 			list.ToList().ForEach(i =>
 			{
-				var svnItem = new SubversionCommitItem()
+				var svnItem = new CommitItem()
 				{
 					Author = i.Author,
 					Date = i.Time,
 					LogMessage = i.LogMessage,
-					Revision = i.Revision,
+					Revision = i.Revision.ToString(),
 					ItemChanges = i.ChangedPaths != null ? i.ChangedPaths.ToItemsChanged(i.Revision, repoPath, mediator, secondsToTimeout, onViewChangeDetails) : null,
 					RepoPath = repoPath,
 					RepositoryName = repoName

@@ -26,8 +26,10 @@
         </Grid.Resources>
 
         <TextBlock Text="Type: " ToolTip="The type of the repository"/>
+        <!--WPF tip: when binding to an ICollectionView, make sure to set IsSynchronizedWithCurrentItem or stuff.MoveCurrentTo() does not update the View-->
         <ComboBox Grid.Column="1" ItemsSource="{Binding RepositoryServices}" DisplayMemberPath="RepositoryType" IsSynchronizedWithCurrentItem="True" />
         
+        <!--Container for dynamically injected repository details views-->
         <ContentControl Grid.Row="1" Grid.ColumnSpan="2" Content="{Binding RepositoryDetailsView}" />
 
         <StackPanel Grid.Row="2" Margin="0,30,0,0" Grid.ColumnSpan="2" HorizontalAlignment="Right" Orientation="Horizontal" >
