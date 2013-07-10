@@ -39,8 +39,8 @@
     <PublisherName>Brent Bulla, Jr.</PublisherName>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>1</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.0</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -403,12 +403,15 @@
   <PropertyGroup>
     <PostBuildEvent>if not exist "$(TargetDir)x86" md "$(TargetDir)x86"
 xcopy /s /y "$(SolutionDir)3rd Party\SharpSVN\*.*" "$(TargetDir)x86"
-if not exist "$(TargetDir)amd64" md "$(TargetDir)amd64"
-xcopy /s /y "$(SolutionDir)3rd Party\SharpSVN-x64\*.*" "$(TargetDir)amd64"
+del /F /Q "$(TargetDir)x86\SharpSvn.UI.dll"
+if not exist "$(TargetDir)amd64" md "$(TargetDir)x64"
+xcopy /s /y "$(SolutionDir)3rd Party\SharpSVN-x64\*.*" "$(TargetDir)x64"
+del /F /Q "$(TargetDir)x64\SharpSvn.UI.dll"
 
 xcopy /s /y "$(SolutionDir)Bin\DiffDotNet.exe" "$(TargetDir)"
 xcopy /s /y "$(SolutionDir)Bin\Menees.dll" "$(TargetDir)"
 xcopy /s /y "$(SolutionDir)Bin\MeneesDiffUtils.dll" "$(TargetDir)"
+
 if not exist "$(TargetDir)NativeBinaries" md "$(TargetDir)NativeBinaries"
 if not exist "$(TargetDir)NativeBinaries\x86" md "$(TargetDir)NativeBinaries\x86"
 xcopy /s /y "$(SolutionDir)packages\LibGit2Sharp.0.9.5\NativeBinaries\x86\*.*" "$(TargetDir)NativeBinaries\x86"

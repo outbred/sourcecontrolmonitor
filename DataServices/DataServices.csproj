@@ -41,6 +41,10 @@
     <Reference Include="PresentationFramework" />
     <Reference Include="SharpSvn">
       <HintPath>..\3rd Party\SharpSvn-x64\SharpSvn.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="SharpSvn.UI">
+      <HintPath>..\3rd Party\SharpSvn-x64\SharpSvn.UI.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

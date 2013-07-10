@@ -117,6 +117,7 @@
     <Compile Include="Utilities\CommitItemSorter.cs" />
     <Compile Include="Services\DiffDotNetService.cs" />
     <Compile Include="Utilities\DiffServiceLocator.cs" />
+    <Compile Include="Utilities\OSHelper.cs" />
     <Compile Include="Utilities\PasswordHelper.cs" />
     <Compile Include="ViewModels\PopupOptions.cs" />
     <Compile Include="ViewModels\PopUpViewModel.cs" />
